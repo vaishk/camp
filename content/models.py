@@ -75,6 +75,9 @@ class Content(models.Model):
     view = models.IntegerField(blank=True, null=True)
     parentid = models.IntegerField(db_column='parentId')  # Field name made lowercase.
 
+    def __unicode__(self):
+        return self.title
+
     class Meta:
         managed = False
         db_table = 'content'
