@@ -19,6 +19,10 @@ class ServerAdmin(admin.ModelAdmin):
 
 class ContentAdmin(admin.ModelAdmin):
     save_on_top = True
+    list_display = ('__unicode__', 'datestart', 'type')
+    list_filter = ['datestart', 'type']
+    search_fields = ['title', 'body', 'header']
+
 #    inlines = [SubdomainInline, DomainAliasInline]
 #    list_display = ('url', 'server', 'manage_nameserver', 'domain_registrar', 'email', 'is_active')
 #    list_editable = ('server', 'manage_nameserver', 'domain_registrar', 'email', 'is_active')

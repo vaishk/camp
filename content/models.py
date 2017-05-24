@@ -53,11 +53,12 @@ class Comments(models.Model): #not used
 
 
 class Content(models.Model):
+    type = models.ForeignKey("ContentTypes", db_column="type")
     shortname = models.CharField(db_column='shortName', max_length=255)  # Field name made lowercase.
     title = models.CharField(max_length=255)
     header = models.TextField(blank=True, null=True)
     body = models.TextField(blank=True, null=True)
-    schedule = models.TextField(blank=True, null=True)
+    schedule = models.TextField(blank=True, null=True)    
     schedulebutton = models.CharField(db_column='scheduleButton', max_length=255, blank=True, null=True)  # Field name made lowercase.
     optbtn2 = models.CharField(db_column='optBtn2', max_length=127, blank=True, null=True)  # Field name made lowercase.
     opttext2 = models.TextField(db_column='optText2', blank=True, null=True)  # Field name made lowercase.
@@ -70,17 +71,18 @@ class Content(models.Model):
     dateend = models.DateField(db_column='dateEnd', blank=True, null=True)  # Field name made lowercase.
     dateadded = models.DateTimeField(db_column='dateAdded')  # Field name made lowercase.
     datemodified = models.DateTimeField(db_column='dateModified', blank=True, null=True)  # Field name made lowercase.
-    type = models.IntegerField()
     published = models.IntegerField()
-    view = models.IntegerField(blank=True, null=True)
-    parentid = models.IntegerField(db_column='parentId')  # Field name made lowercase.
+    view = models.ForeignKey("Views", null=True, blank=True, db_column="view")
+    place = models.CharField(max_length=255)
+    parentid = models.ForeignKey("Content", null=True, db_column='parentID', blank=True, limit_choices_to={'type_id': 3},) # Field name made lowercase.
 
     def __unicode__(self):
         return self.title
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'content'
+
 
 
 class ContentContent(models.Model):
@@ -114,6 +116,9 @@ class ContentTypes(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name             
 
     class Meta:
         managed = False
@@ -199,6 +204,9 @@ class Videos(models.Model): # not used
 class Views(models.Model):
     name = models.CharField(max_length=255)
     href = models.CharField(max_length=255, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name
 
     class Meta:
         managed = False

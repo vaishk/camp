@@ -127,6 +127,7 @@ class Content(models.Model):
     title = models.CharField(max_length=255)
     header = models.TextField(blank=True, null=True)
     body = models.TextField(blank=True, null=True)
+    place = models.TextField(blank=True, null=True)
     schedule = models.TextField(blank=True, null=True)
     schedulebutton = models.CharField(db_column='scheduleButton', max_length=255, blank=True, null=True)  # Field name made lowercase.
     optbtn2 = models.CharField(db_column='optBtn2', max_length=127, blank=True, null=True)  # Field name made lowercase.
@@ -146,7 +147,7 @@ class Content(models.Model):
     parentid = models.IntegerField(db_column='parentId')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'content'
 
 
