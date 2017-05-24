@@ -75,6 +75,7 @@ class Content(models.Model):
     view = models.ForeignKey("Views", null=True, blank=True, db_column="view")
     place = models.CharField(max_length=255)
     parentid = models.ForeignKey("Content", null=True, db_column='parentID', blank=True, limit_choices_to={'type_id': 3},) # Field name made lowercase.
+    related_contents = models.ManyToManyField('Content', through='ContentContent', related_name="+")
 
     def __unicode__(self):
         return self.title
