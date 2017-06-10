@@ -9,7 +9,17 @@ from models import *
 
 class ContentParentsInline(admin.TabularInline):
     model = ContentContent
-    fk_name = 'contentid1'
+    fk_name = 'contentid2'
+
+class ImagesInline(admin.StackedInline):
+    model = Image
+
+class FileInline(admin.StackedInline):
+    model = File
+
+class LinkInline(admin.StackedInline):
+    model = Link
+
 '''
 class SubdomainInline(admin.StackedInline):
     model = Subdomain
@@ -26,7 +36,7 @@ class ContentAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'datestart', 'type')
     list_filter = ['datestart', 'type']
     search_fields = ['title', 'body', 'header']
-    inlines = [ContentParentsInline]
+    inlines = [ContentParentsInline, ImagesInline, FileInline, LinkInline]
 
 #    inlines = [SubdomainInline, DomainAliasInline]
 #    list_display = ('url', 'server', 'manage_nameserver', 'domain_registrar', 'email', 'is_active')

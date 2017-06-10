@@ -9,7 +9,7 @@ class Acrolike(models.Model):
     title = models.CharField(max_length=255)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'acrolike'
 
 
@@ -21,7 +21,7 @@ class Acronym(models.Model):
     p = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'acronym'
 
 
@@ -31,7 +31,7 @@ class Audios(models.Model):
     description = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'audios'
 
 
@@ -48,7 +48,7 @@ class Comments(models.Model): #not used
     ip = models.CharField(db_column='IP', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'comments'
 
 
@@ -74,7 +74,7 @@ class Content(models.Model):
     published = models.IntegerField()
     view = models.ForeignKey("Views", null=True, blank=True, db_column="view")
     place = models.CharField(max_length=255, null=True, blank=True)
-    parentid = models.ForeignKey("Content", null=True, db_column='parentID', blank=True, limit_choices_to={'type_id': 3}, related_name="please_run") # Field name made lowercase.
+    parentid = models.IntegerField(null=True, db_column='parentID', blank=True) # Field name made lowercase.
     parents = models.ManyToManyField('Content', through='ContentContent', related_name= "children")
 
     def __unicode__(self):
@@ -94,7 +94,7 @@ class ContentContent(models.Model):
         return "%s is child of %s" % (self.contentid1.title, self.contentid2.title,)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'content_content'
 
 
@@ -103,7 +103,7 @@ class ContentKeyword(models.Model):
     keywordid = models.IntegerField(db_column='keywordID')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'content_keyword'
 
 
@@ -112,7 +112,7 @@ class ContentResource(models.Model):
     resourceid = models.IntegerField(db_column='resourceID')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'content_resource'
 
 
@@ -125,7 +125,7 @@ class ContentTypes(models.Model):
         return self.name             
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'content_types'
 
 
@@ -134,7 +134,7 @@ class Keywords(models.Model):
     description = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'keywords'
 
 
@@ -149,7 +149,7 @@ class People(models.Model): #not used
     type = models.IntegerField()
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'people'
 
 
@@ -159,7 +159,7 @@ class PersonContent(models.Model):
     level = models.IntegerField()
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'person_content'
 
 
@@ -168,7 +168,7 @@ class PersonResource(models.Model):
     resourceid = models.IntegerField(db_column='resourceID')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'person_resource'
 
 
@@ -180,13 +180,33 @@ class Resources(models.Model):
     width = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
     istech = models.IntegerField(db_column='isTech')  # Field name made lowercase.
-    dateadded = models.DateTimeField(db_column='dateAdded')  # Field name made lowercase.
+    dateadded = models.DateTimeField(db_column='dateAdded', null=True, blank=True)  # Field name made lowercase.
     orderno = models.IntegerField(db_column='orderNo', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'resources'
 
+class File(models.Model):
+    content = models.ForeignKey('Content')
+    fil = models.FileField(upload_to='files')
+    description = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    order = models.IntegerField(blank=True, null=True)
+
+class Image(models.Model):
+    content = models.ForeignKey('Content', related_name='images')
+    image = models.ImageField(upload_to='images')
+    description = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    order = models.IntegerField(blank=True, null=True)
+
+class Link(models.Model):
+    content = models.ForeignKey('Content')
+    url = models.URLField()
+    description = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    order = models.IntegerField(blank=True, null=True)
 
 class Videos(models.Model): # not used
     sha1 = models.CharField(max_length=50)
@@ -201,7 +221,7 @@ class Videos(models.Model): # not used
     contentid = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'videos'
 
 
@@ -213,6 +233,6 @@ class Views(models.Model):
         return self.name
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'views'
 
