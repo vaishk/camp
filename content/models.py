@@ -75,7 +75,7 @@ class Content(models.Model):
     view = models.ForeignKey("Views", null=True, blank=True, db_column="view")
     place = models.CharField(max_length=255, null=True, blank=True)
     parentid = models.ForeignKey("Content", null=True, db_column='parentID', blank=True, limit_choices_to={'type_id': 3}, related_name="please_run") # Field name made lowercase.
-    content_related = models.ManyToManyField('Content', through='ContentContent', related_name= "run_run_run")
+    parents = models.ManyToManyField('Content', through='ContentContent', related_name= "children")
 
     def __unicode__(self):
         return self.title
@@ -87,8 +87,11 @@ class Content(models.Model):
 
 
 class ContentContent(models.Model):
-    contentid1 = models.ForeignKey("content", db_column='contentID1', related_name="from_content")  # Field name made lowercase.
-    contentid2 = models.ForeignKey("content", db_column='contentID2', related_name="to_content")  # Field name made lowercase.
+    contentid1 = models.ForeignKey("content", db_column='contentID1', related_name="child")  # Field name made lowercase.
+    contentid2 = models.ForeignKey("content", db_column='contentID2', related_name="parent")  # Field name made lowercase.
+
+    def __unicode__(self):
+        return "%s is child of %s" % (self.contentid1.title, self.contentid2.title,)
 
     class Meta:
         managed = False
