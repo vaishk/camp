@@ -64,7 +64,7 @@ class Content(models.Model):
     opttext2 = models.TextField(db_column='optText2', blank=True, null=True)  # Field name made lowercase.
     optbtn3 = models.CharField(db_column='optBtn3', max_length=127, blank=True, null=True)  # Field name made lowercase.
     opttext3 = models.TextField(db_column='optText3', blank=True, null=True)  # Field name made lowercase.
-    technotes = models.TextField()
+    technotes = models.TextField(db_column='technotes', blank=True, null=True)
     image = models.CharField(max_length=150, blank=True, null=True)
     postedby = models.CharField(db_column='postedBy', max_length=50, blank=True, null=True)  # Field name made lowercase.
     datestart = models.DateField(db_column='dateStart', blank=True, null=True)  # Field name made lowercase.
@@ -73,7 +73,7 @@ class Content(models.Model):
     datemodified = models.DateTimeField(db_column='dateModified', blank=True, null=True)  # Field name made lowercase.
     published = models.IntegerField()
     view = models.ForeignKey("Views", null=True, blank=True, db_column="view")
-    place = models.CharField(max_length=255)
+    place = models.CharField(max_length=255, null=True, blank=True)
     parentid = models.ForeignKey("Content", null=True, db_column='parentID', blank=True, limit_choices_to={'type_id': 3}, related_name="please_run") # Field name made lowercase.
     content_related = models.ManyToManyField('Content', through='ContentContent', related_name= "run_run_run")
 

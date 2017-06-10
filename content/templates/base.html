@@ -1,0 +1,54 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Studio CAMP</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans"/>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}"> 
+    <link rel="stylesheet" type="text/css" href="{% static "css/app.css" %}"> 
+    <link rel="stylesheet" type="text/css" href="{% static "css/foundation.css" %}"> 
+  </head>
+  <body>
+
+  
+  <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+    <div class="off-canvas position-right" id="offCanvasRight" data-off-canvas data-position="right">
+    <ul class="vertical-menu">
+        <li>HOME</li>
+        <li>ABOUT</li>
+        <li><a href="/project">PROJECTS</a></li>
+        <li>EVENTS</li>
+        <li>WORKS</li>
+        <li>TEXTS</li>
+        <li>CONTACT</li>
+      </ul>
+    </div>
+
+    <div class="off-canvas-content" data-off-canvas-content>
+        <div class="title-bar-right">
+          <button class="menu-icon" type="button" data-toggle="offCanvasRight"></button>
+      </div>
+    </div>
+  </div>
+
+
+  {% block content %}
+  {% endblock %}
+
+
+
+  {% load static %}
+    <script src="{% static "js/jquery.js" %}"></script>
+    <script src="{% static "js/app.js" %}"></script>
+    <script src="{% static "js/foundation.js" %}"></script>
+    <script src="{% static "js/what-input.js" %}"></script>
+    <script>
+    $(document).foundation();
+    </script>
+
+  </body>
+</html>
