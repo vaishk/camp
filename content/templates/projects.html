@@ -1,0 +1,40 @@
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="large-8 medium-8 columns special-column">
+	<img src="http://camputer.org/images/{{projects.image}}">
+	<div class="index-text">
+	<h4><a href="/{{projects.type}}/{{ projects.shortname }}/" class="big-title">{{projects.title}} </a></h4>
+	<p> {{projects.formatted_header|safe}} </p>
+	<p> {{projects.formatted_body|safe}} </p>
+</div>
+</div>
+
+{% if latest_content_list %}
+
+	<div class="large-4 medium-4 columns">
+		<h4 class="sidebar-h4"> Ongoing Projects </h4>
+		<div class="row">
+		
+		    {% for projects in latest_content_list %}
+		    <div class="row right-items">
+			    <div class="small-6 columns">
+			        <img src="http://camputer.org/images/{{ projects.image }}">
+			    </div>
+			    <div class="small-6 columns">
+			        <a href="/{{projects.type}}/{{ projects.shortname }}/" class="sidebar-title">{{ projects.title }}</a>
+			         <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{ projects.datestart }} </b></font> <br/>
+			          We will add a place to fill this text </h6>
+			    </div>
+			</div>
+		    {% endfor %}
+			{% else %}
+			    <p>No polls are available.</p>
+			{% endif %}
+				</div>
+			</div>		
+
+{% endblock %}

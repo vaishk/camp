@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django import forms
 from django.contrib import admin
-
+from markdownx.admin import MarkdownxModelAdmin
+from markdownx.widgets import AdminMarkdownxWidget
 # Register your models here.
 from models import *
+
+from photologue.admin import GalleryAdmin as GalleryAdminDefault
+from photologue.models import Gallery
 
 
 class ContentParentsInline(admin.TabularInline):
@@ -31,12 +35,27 @@ class ServerAdmin(admin.ModelAdmin):
     pass
 '''
 
+class GalleryAdminForm(forms.ModelForm):
+    """Users never need to enter a description on a gallery."""
+
+    class Meta:
+        model = Gallery
+        exclude = ['description']
+
+
+class GalleryAdmin(GalleryAdminDefault):
+    form = GalleryAdminForm
+
 class ContentAdmin(admin.ModelAdmin):
     save_on_top = True
     list_display = ('__unicode__', 'datestart', 'type')
     list_filter = ['datestart', 'type']
     search_fields = ['title', 'body', 'header']
     inlines = [ContentParentsInline, ImagesInline, FileInline, LinkInline]
+    formfield_overrides = {
+        models.TextField: {'widget': AdminMarkdownxWidget},
+    }
+
 
 #    inlines = [SubdomainInline, DomainAliasInline]
 #    list_display = ('url', 'server', 'manage_nameserver', 'domain_registrar', 'email', 'is_active')
@@ -44,3 +63,6 @@ class ContentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Content, ContentAdmin)
+admin.site.unregister(Gallery)
+admin.site.register(Gallery, GalleryAdmin)
+

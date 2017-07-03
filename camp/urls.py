@@ -13,14 +13,23 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
+from markdownx import urls as markdownx
 from content import views
 from django.contrib import admin
+from django.conf.urls.static import static
+from django.conf import settings
+from photologue.views import GalleryListView
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
-    url(r'^content/(?P<shortname>\w+)/$', views.content, name='content'),
-    url(r'^project/', views.project)
-]
+    url(r'^events/(?P<shortname>\w+)/$', views.events, name='events'),
+    url(r'^projects/(?P<shortname>\w+)/$', views.projects, name='projects'),
+    url(r'^project/', views.project),
+    url(r'^markdownx/', include(markdownx)),
+    url(r'^photologue/', include('photologue.urls', namespace='photologue')),
+    url(r'^gallerylist/$', GalleryListView.as_view(), name='gallery-list'),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

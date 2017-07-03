@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}"> 
     <link rel="stylesheet" type="text/css" href="{% static "css/app.css" %}"> 
     <link rel="stylesheet" type="text/css" href="{% static "css/foundation.css" %}"> 
+    <link rel="stylesheet" type="text/css" href="{% static "css/jquery.bxslider.css" %}">
   </head>
   <body>
 
@@ -18,10 +19,10 @@
 
     <div class="off-canvas position-right" id="offCanvasRight" data-off-canvas data-position="right">
     <ul class="vertical-menu">
-        <li>HOME</li>
+        <li><a href="http://127.0.0.1:8000/">HOME</a></li>
         <li>ABOUT</li>
         <li><a href="/project">PROJECTS</a></li>
-        <li>EVENTS</li>
+        <li><a href="http://127.0.0.1:8000/">EVENTS</a></li>
         <li>WORKS</li>
         <li>TEXTS</li>
         <li>CONTACT</li>
@@ -40,14 +41,36 @@
   {% endblock %}
 
 
-
   {% load static %}
     <script src="{% static "js/jquery.js" %}"></script>
     <script src="{% static "js/app.js" %}"></script>
     <script src="{% static "js/foundation.js" %}"></script>
     <script src="{% static "js/what-input.js" %}"></script>
+    <script src="{% static "js/jquery.bxslider.js" %}"></script>
     <script>
     $(document).foundation();
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var slider = $('.slider1').bxSlider({
+          adaptiveHeight : true,
+          pager : false,
+        });
+
+
+      $(document).keydown(function(e){
+        if (e.keyCode == 39) // Right arrow 
+            {
+            slider.goToNextSlide();
+                return false;
+            }
+       else if (e.keyCode == 37) // left arrow
+            {
+                 slider.goToPrevSlide();
+                return false;
+           }
+        });
+      });
     </script>
 
   </body>

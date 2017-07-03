@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from markdownx.models import MarkdownxField
 from django.db import models
+from markdownx.utils import markdownify
 
 # Create your models here.
 
@@ -54,10 +55,10 @@ class Comments(models.Model): #not used
 
 class Content(models.Model):
     type = models.ForeignKey("ContentTypes", db_column="type")
-    shortname = models.CharField(db_column='shortName', max_length=255)  # Field name made lowercase.
+    shortname = models.CharField(db_column='shortName', max_length=255, unique=True)  # Field name made lowercase.
     title = models.CharField(max_length=255)
-    header = models.TextField(blank=True, null=True)
-    body = models.TextField(blank=True, null=True)
+    header = MarkdownxField()
+    body = MarkdownxField()
     schedule = models.TextField(blank=True, null=True)    
     schedulebutton = models.CharField(db_column='scheduleButton', max_length=255, blank=True, null=True)  # Field name made lowercase.
     optbtn2 = models.CharField(db_column='optBtn2', max_length=127, blank=True, null=True)  # Field name made lowercase.
@@ -80,10 +81,22 @@ class Content(models.Model):
     def __unicode__(self):
         return self.title
 
+    @property
+    def formatted_header(self):
+        return markdownify(self.header)
+
+    @property
+    def formatted_body(self):
+        return markdownify(self.body)
+
+    @property
+    def typefilter(self):
+        return self.type
+    
+
     class Meta:
         managed = True
         db_table = 'content'
-
 
 
 class ContentContent(models.Model):
@@ -91,7 +104,7 @@ class ContentContent(models.Model):
     contentid2 = models.ForeignKey("content", db_column='contentID2', related_name="parent")  # Field name made lowercase.
 
     def __unicode__(self):
-        return "%s is child of %s" % (self.contentid1.title, self.contentid2.title,)
+        return self.contentid1.title
 
     class Meta:
         # managed = False
@@ -196,7 +209,7 @@ class File(models.Model):
 
 class Image(models.Model):
     content = models.ForeignKey('Content', related_name='images')
-    image = models.ImageField(upload_to='images')
+    image = models.ImageField(upload_to='camp/static/images')
     description = models.TextField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     order = models.IntegerField(blank=True, null=True)
@@ -235,4 +248,10 @@ class Views(models.Model):
     class Meta:
         # managed = False
         db_table = 'views'
+
+
+class MyModel(models.Model):
+    myfield = MarkdownxField()
+
+
 
