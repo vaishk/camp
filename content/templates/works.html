@@ -5,20 +5,20 @@
 {% block content %}
 
 <div class="large-8 medium-8 columns special-column">
-	<img src="http://camputer.org/images/{{projects.image}}">
+	<img src="http://camputer.org/images/{{works.image}}">
 	<div class="index-text">
-	<h4><a href="/{{projects.type}}/{{ projects.shortname }}/" class="big-title">{{projects.title}} </a></h4>
-	<p> {{projects.formatted_header|safe}} </p>
-	<p> {{projects.formatted_body|safe}} </p>
+	<h4><a href="/{{works.type}}/{{ works.shortname }}/" class="big-title">{{works.title}} </a></h4>
+	<p> {{works.formatted_header|safe}} </p>
+	<p> {{works.formatted_body|safe}} </p>
 </div>
 </div>
 
 {% if latest_content_list %}
 
 	<div class="large-4 medium-4 columns">
-	{% if projects.children.all %}
+	{% if works.children.all %}
 		<h4 class="sidebar-h4"> Related </h4>
-		{% for child in projects.children.all %}
+		{% for child in works.children.all %}
 		<div class="row related-row">
 		<div class="small-6 columns">
 			<img src="http://camputer.org/images/{{ child.image }}">
@@ -29,22 +29,22 @@
 		</div>
 		{% endfor %}
 		{% endif %}
-		<h4 class="sidebar-h4">Projects </h4>
+		<h4 class="sidebar-h4"> Works </h4>
 		<div class="row">
 		
-		    {% for projects in latest_content_list %}
+		    {% for works in latest_content_list %}
 		    <div class="row right-items">
 			    <div class="small-6 columns">
-			        <img src="http://camputer.org/images/{{ projects.image }}">
+			        <img src="http://camputer.org/images/{{ works.image }}">
 			    </div>
 			    <div class="small-6 columns">
-			        <a href="/{{projects.type}}/{{ projects.shortname }}/" class="sidebar-title">{{ projects.title }}</a>
-			        <p> {{projects.header|striptags|truncatechars:100}} </p>
+			        <a href="/{{works.type}}/{{ works.shortname }}/" class="sidebar-title">{{ works.title }}</a>
+			    	<p> {{works.header|striptags|truncatechars:100}} </p>
 			    </div>
 			</div>
 		    {% endfor %}
 			{% else %}
-			    <p>No projects.</p>
+			    <p>No works.</p>
 			{% endif %}
 				</div>
 			</div>		

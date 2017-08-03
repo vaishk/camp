@@ -2,6 +2,7 @@ body {
 	background-color: #000000 !important;
 	font-size: 14px !important;
 	color: #ffffff !important;
+	overflow-x: hidden;
 }
 
 .content_detail {
@@ -37,6 +38,10 @@ body, h1, h2, h3, h4, h5, h6 {
 .sidebar-date {
 	text-transform: uppercase;
 	font-size: 0.7em;
+}
+
+.news {
+	padding-left: 10px;
 }
 
 .special-column {

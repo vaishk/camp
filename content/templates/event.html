@@ -3,12 +3,14 @@
 
 {% block content %}
 
-	{% for content in homepage %}
+	{% for content in featured %}
 	<div class="large-8 medium-8 columns special-column">
+	<img src="http://camputer.org/images/{{content.image}}">
 	<div class="index-text">
-	<h4 class="big-title">{{content.title}} </a></h4>
-	<p> {{content.header}} </p>
-	<p> {{content.body}} </p>
+	<h4><a href="/{{content.type}}/{{ content.shortname }}/" class="big-title">{{content.title}} </a></h4>
+	<h6 class="big-date"> <font color="#ef4e5c"> <b> {{ content.datestart }} </b></font> <br/>
+			          Camp Roof </h6>
+	<p> {{content.body|striptags|truncatechars:250}} <a href="/{{content.type}}/{{ content.shortname }}">read more</a> </p>
 	</div>
 	{% endfor %}
 
@@ -22,9 +24,8 @@
 		    
 		    <div class="row right-items">
 			    <div class= "small-12 columns">
-			    	<h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{content.datestart}} </b> 
-			    	{{ content.title }} <br />
-			    	{{ content.formatted_header|safe }} </font> 
+			    	<h6> {{ content.title }} <br />
+			    	{{ content.formatted_header|safe }} 
 			    	</h6>
 			    </div>
 		    </div>
@@ -37,9 +38,8 @@
 			    </div>
 			    <div class="small-6 columns">
 			        <a href="/{{content.type}}/{{ content.shortname }}/" class="sidebar-title">{{ content.title }}</a>
-			         <h6 class="sidebar-date"> <font color="#ef4e5c">  <b> {{ content.datestart }} {% if content.dateend %} - {{content.dateend}} {% endif %} </b></font> <br/>
-			          {{content.place}} </h6>
-			          <p> {{content.header|striptags|truncatechars:100}} </p>
+			         <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{ content.datestart }} </b></font> <br/>
+			          We will add a place to fill this text </h6>
 			    </div>
 			</div>
 		    {% endif %}

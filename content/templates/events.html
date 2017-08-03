@@ -24,6 +24,7 @@
 
 
 	<div class="large-4 medium-4 columns">
+		{% if events.children.all %}
 		<h4 class="sidebar-h4"> Related </h4>
 		{% for child in events.children.all %}
 		<div class="row related-row">
@@ -32,38 +33,29 @@
 		</div>
 		<div class="small-6 columns">
 		<h6><a href="http://127.0.0.1:8000/{{child.type}}/{{child.shortname}}" class="sidebar-title"> {{child}} </a> </h6>
+		<h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{ child.datestart }} {% if child.dateend %} - {{child.dateend}} {% endif %} </b></font> <br/>
+			          {{child.place}} </h6>
+
 		</div>
 		</div>
 		{% endfor %}
-		<h4 class="sidebar-h4"> Upcoming Events </h4>
+		{% endif %}
+		<h4 class="sidebar-h4">Events </h4>
 		<div class="row">
 		
 		{% for events in latest_content_list %}
 		    
-		    {% if events.type_id == 1 %}
-		    
-		    <div class="row right-items">
-			    <div class= "small-12 columns">
-			    	<h6> {{ events.title }} <br />
-			    	{{ events.formatted_header|safe }} 
-			    	</h6>
-			    </div>
-		    </div>
-		    {% endif %}
-		   
-		    {% if events.type_id == 0 %}
 		    <div class="row right-items">
 			    <div class="small-6 columns">
 			        <img src="http://camputer.org/images/{{ events.image }}">
 			    </div>
 			    <div class="small-6 columns">
 			        <a href="/{{events.type}}/{{ events.shortname }}/"  >{{ events.title }}</a>
-			         <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{ events.datestart }} </b></font> <br/>
-			          {{ events.typefilter }}</h6>
+			         <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{ events.datestart }} </b></font> <br/></h6>
+			          <p> {{events.header|striptags|truncatechars:200}} </p>
 			    </div>
 			</div>
 		    
-		    {% endif %}
 
 		{% endfor %}
 			
