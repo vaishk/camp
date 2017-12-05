@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -84,6 +86,13 @@ class Content(models.Model):
         managed = True
         db_table = 'content'
 
+    @property
+    def image_url(self):
+        if self.image:
+            return settings.IMAGE_PREFIX + self.image
+
+    def get_absolute_url(self):
+        return reverse('content', kwargs={'shortname': self.shortname})
 
 
 class ContentContent(models.Model):
@@ -203,6 +212,9 @@ class Videos(models.Model): # not used
     class Meta:
         managed = False
         db_table = 'videos'
+
+    def image_url(self):
+        return settings.IMAGE_PREFIX + self.image
 
 
 class Views(models.Model):

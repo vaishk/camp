@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_extensions',
+
     'content',
 ]
 
@@ -121,7 +124,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_URL = '/static/'
 
+
+IMAGE_PREFIX = 'http://studio.camp/images/'
+
 try:
     from local_settings import *
 except:
     pass
+

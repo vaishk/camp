@@ -18,13 +18,13 @@
 
     <div class="off-canvas position-right" id="offCanvasRight" data-off-canvas data-position="right">
     <ul class="vertical-menu">
-        <li>HOME</li>
-        <li>ABOUT</li>
-        <li><a href="/project">PROJECTS</a></li>
-        <li>EVENTS</li>
-        <li>WORKS</li>
-        <li>TEXTS</li>
-        <li>CONTACT</li>
+        <li><a href="{% url 'index' %}">HOME</a></li>
+        <li><a href="{% url 'about' %}">ABOUT</a></li>
+        <li><a href="{% url 'projects' %}">PROJECTS</a></li>
+        <li><a href="{% url 'events' %}">EVENTS</a></li>
+        <li><a href="{% url 'works' %}">WORKS</a></li>
+        <li><a href="{% url 'texts' %}">TEXTS</a></li>
+        <li><a href="{% url 'contact' %}">CONTACT</a></li>
       </ul>
     </div>
 
@@ -43,12 +43,8 @@
 
   {% load static %}
     <script src="{% static "js/jquery.js" %}"></script>
-    <script src="{% static "js/app.js" %}"></script>
     <script src="{% static "js/foundation.js" %}"></script>
+    <script src="{% static "js/app.js" %}"></script>
     <script src="{% static "js/what-input.js" %}"></script>
-    <script>
-    $(document).foundation();
-    </script>
-
   </body>
 </html>

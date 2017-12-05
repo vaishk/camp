@@ -20,7 +20,19 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
-    url(r'^content/(?P<shortname>\w+)/$', views.content, name='content'),
-    url(r'^project/', views.project)
+
+    url(r'^.*index.php$', views.redirect_index, name='redirect_index'),
+    url(r'^.*event.php$', views.redirect_event, name='redirect_event'),
+
+    url(r'^projects/', views.projects, name='projects'),
+    url(r'^events/', views.events, name='events'),
+    url(r'^works/', views.works, name='works'),
+    url(r'^texts/', views.texts, name='texts'),
+
+    url(r'^about/', views.about, name='about'),
+    url(r'^contact/', views.contact, name='contact'),
+
+
+    url(r'^(?P<shortname>.+)/$', views.content, name='content'),
 ]
 

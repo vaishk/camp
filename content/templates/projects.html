@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="large-4 medium-4 columns">
+        <h4 class="sidebar-h4">{{ title }}</h4>
+		<div class="row">
+		    {% for content in content %}
+		    <div class="row right-items">
+			    <div class="small-6 columns">
+			        <img src="{{ content.image_url }}">
+			    </div>
+			    <div class="small-6 columns">
+			        <a href="{{ content.get_absolute_url }}" class="sidebar-title">{{ content.title }}</a>
+			         <h6 class="sidebar-date">{{ content.datestart }}</h6>
+                     {{content.header|striptags|truncatechars:150|safe}} <a href="{{ content.get_absolute_url }}">read more</a>
+			    </div>
+			</div>
+		    {% endfor %}
+			</div>
+			</div>
+
+ {% endblock %}
