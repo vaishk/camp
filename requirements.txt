@@ -1,1 +1,3 @@
-django
+django<2.0
+django_extensions
+gunicorn
