@@ -1,8 +1,11 @@
-
-
 {% extends 'base.html' %}
 
 {% block content %}
+{% if request.user.is_staff %}
+<div class="admin-menu">
+    <a href="{% url 'admin:content_content_change' content.id %}">Edit</a>
+</div>
+{% endif %}
 
 <img src="{{ content.image_url }}" width="75%">
 <div class="content_detail">
@@ -10,5 +13,49 @@
 
 <h4>{{ content.header|safe }} </h4>
 <p>{{ content.body|safe }}</p>
+
+{% if content.children.exists %}
+<b>Child Nodes:</b> <br>
+<ul>
+    {% for node in content.children.all %}
+        {% if node.shortname %}
+        <li>
+            <a href="{{node.get_absolute_url}}">{{ node.title }}</a>
+        </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if content.parent and content.parent.title %}
+    <b>Part of:</b><br>
+    <a href="{{content.parent.get_absolute_url}}">{{content.parent.title}}</a>
+{% endif %}
+
+{% if content.resources.exists %}
+<style>
+.resources img {
+    max-width: 128px;
+    float: left;
+}
+</style>
+<div class="resources">
+    <b>Resources:</b> <br>
+    {% for res in content.resources.all %}
+        <div>
+            {% if res.is_image %}
+                <img src="{{res.get_absolute_url}}">
+            {% elif res.is_audio %}
+                <audio controls src="{{res.get_absolute_url}}"></audio>
+            {% elif res.is_video %}
+                <video controls src="{{res.get_absolute_url}}"></video>
+            {% else %}
+                <a href="{{res.get_absolute_url}}">{{res.description|default:res.href}}</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <br clear="all">
+</div>
+{% endif %}
 </div>
   {% endblock %}

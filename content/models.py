@@ -43,10 +43,11 @@ class Comments(models.Model): #not used
     name = models.CharField(max_length=150, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True)
     personid = models.IntegerField(db_column='personID', blank=True, null=True)  # Field name made lowercase.
-    dateadded = models.DateTimeField(db_column='dateAdded')  # Field name made lowercase.
-    datemodified = models.DateTimeField(db_column='dateModified', blank=True, null=True)  # Field name made lowercase.
-    parentid = models.IntegerField(db_column='parentID', blank=True, null=True)  # Field name made lowercase.
-    contentid = models.IntegerField(db_column='contentID')  # Field name made lowercase.
+    dateadded = models.DateTimeField(db_column='dateAdded', auto_now_add=True)
+    datemodified = models.DateTimeField(db_column='dateModified', blank=True, null=True, auto_now=True)
+    parentid = models.IntegerField(db_column='parentID', blank=True, null=True)
+    parent = models.ForeignKey('Comments', null=True, blank=True, related_name='comments', db_index=True, db_column='parentId')
+    content = models.ForeignKey('Content', null=True, blank=True, related_name='comments', db_index=True, db_column='contentID')
     ip = models.CharField(db_column='IP', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -71,16 +72,19 @@ class Content(models.Model):
     postedby = models.CharField(db_column='postedBy', max_length=50, blank=True, null=True)  # Field name made lowercase.
     datestart = models.DateField(db_column='dateStart', blank=True, null=True)  # Field name made lowercase.
     dateend = models.DateField(db_column='dateEnd', blank=True, null=True)  # Field name made lowercase.
-    dateadded = models.DateTimeField(db_column='dateAdded')  # Field name made lowercase.
-    datemodified = models.DateTimeField(db_column='dateModified', blank=True, null=True)  # Field name made lowercase.
-    published = models.IntegerField()
+    dateadded = models.DateTimeField(db_column='dateAdded', auto_now_add=True)
+    datemodified = models.DateTimeField(db_column='dateModified', blank=True, null=True, auto_now=True)
+
+    published = models.BooleanField()
     view = models.ForeignKey("Views", null=True, blank=True, db_column="view")
     place = models.CharField(max_length=255, null=True, blank=True)
-    parentid = models.ForeignKey("Content", null=True, db_column='parentID', blank=True, limit_choices_to={'type_id': 3}, related_name="please_run") # Field name made lowercase.
-    parents = models.ManyToManyField('Content', through='ContentContent', related_name= "children")
+
+    parent = models.ForeignKey('Content', null=True, blank=True, related_name='children', db_index=True, db_column='parentId')
+
+    resources = models.ManyToManyField('Resources', through='ContentResource', related_name="content")
 
     def __unicode__(self):
-        return self.title
+        return self.title or 'Untitled'
 
     class Meta:
         managed = True
@@ -92,12 +96,13 @@ class Content(models.Model):
             return settings.IMAGE_PREFIX + self.image
 
     def get_absolute_url(self):
-        return reverse('content', kwargs={'shortname': self.shortname})
+        if self.shortname:
+            return reverse('content', kwargs={'shortname': self.shortname})
 
-
+'''
 class ContentContent(models.Model):
-    contentid1 = models.ForeignKey("content", db_column='contentID1', related_name="child")  # Field name made lowercase.
-    contentid2 = models.ForeignKey("content", db_column='contentID2', related_name="parent")  # Field name made lowercase.
+    contentid1 = models.ForeignKey('Content', db_column='contentID1', related_name='child')
+    contentid2 = models.ForeignKey('Content', db_column='contentID2', related_name='parent')
 
     def __unicode__(self):
         return "%s is child of %s" % (self.contentid1.title, self.contentid2.title,)
@@ -105,11 +110,11 @@ class ContentContent(models.Model):
     class Meta:
         managed = False
         db_table = 'content_content'
-
+'''
 
 class ContentKeyword(models.Model):
-    contentid = models.IntegerField(db_column='contentID')  # Field name made lowercase.
-    keywordid = models.IntegerField(db_column='keywordID')  # Field name made lowercase.
+    contentid = models.ForeignKey('Content', db_column='contentID')
+    resourceid = models.ForeignKey('Keywords', db_column='keywordID')
 
     class Meta:
         managed = False
@@ -117,8 +122,11 @@ class ContentKeyword(models.Model):
 
 
 class ContentResource(models.Model):
-    contentid = models.IntegerField(db_column='contentID')  # Field name made lowercase.
-    resourceid = models.IntegerField(db_column='resourceID')  # Field name made lowercase.
+    content = models.ForeignKey('Content', db_column='contentID')
+    resource = models.ForeignKey('Resources', db_column='resourceID')
+
+    def __unicode__(self):
+        return self.resource.href
 
     class Meta:
         managed = False
@@ -157,14 +165,17 @@ class People(models.Model): #not used
     bio = models.TextField(blank=True, null=True)
     type = models.IntegerField()
 
+    resources = models.ManyToManyField('Resources', through='PersonResource', related_name='people')
+    content = models.ManyToManyField('Content', through='PersonContent', related_name='people')
+
     class Meta:
         managed = False
         db_table = 'people'
 
 
 class PersonContent(models.Model):
-    personid = models.IntegerField(db_column='personID')  # Field name made lowercase.
-    contentid = models.IntegerField(db_column='contentID')  # Field name made lowercase.
+    personid = models.ForeignKey("people", db_column="personID")
+    contentid = models.ForeignKey("content", db_column="contentID")
     level = models.IntegerField()
 
     class Meta:
@@ -173,8 +184,8 @@ class PersonContent(models.Model):
 
 
 class PersonResource(models.Model):
-    personid = models.IntegerField(db_column='personID')  # Field name made lowercase.
-    resourceid = models.IntegerField(db_column='resourceID')  # Field name made lowercase.
+    personid = models.ForeignKey("people", db_column="personID")
+    resourceid = models.ForeignKey("resources", db_column="resourceID")
 
     class Meta:
         managed = False
@@ -191,6 +202,32 @@ class Resources(models.Model):
     istech = models.IntegerField(db_column='isTech')  # Field name made lowercase.
     dateadded = models.DateTimeField(db_column='dateAdded')  # Field name made lowercase.
     orderno = models.IntegerField(db_column='orderNo', blank=True, null=True)  # Field name made lowercase.
+
+    def __unicode__(self):
+        return self.href
+
+    def get_absolute_url(self):
+        href = self.href
+        if not href.startswith('http') and not href.startswith('/'):
+            href = '/' + href
+        if href.startswith('/'):
+            href = 'https://studio.camp' + href
+        return href
+
+    @property
+    def is_image(self):
+        if self.mime:
+            return self.mime.lower() in ('gif', 'jpeg', 'jpg', 'png')
+
+    @property
+    def is_audio(self):
+        if self.mime:
+            return self.mime.lower() in ('mp3', 'ogg')
+
+    @property
+    def is_video(self):
+        if self.mime:
+            return self.mime.lower() in ('ogv', 'mp4')
 
     class Meta:
         managed = False

@@ -4,12 +4,8 @@ from __future__ import unicode_literals
 from django.contrib import admin
 
 # Register your models here.
-from models import *
+from . import models
 
-
-class ContentParentsInline(admin.TabularInline):
-    model = ContentContent
-    fk_name = 'contentid1'
 '''
 class SubdomainInline(admin.StackedInline):
     model = Subdomain
@@ -21,16 +17,30 @@ class ServerAdmin(admin.ModelAdmin):
     pass
 '''
 
+class ResourcesAdmin(admin.ModelAdmin):
+    search_fields = ['href']
+    list_filter = ['mime']
+
+admin.site.register(models.Resources, ResourcesAdmin)
+
+
+class ResourcesInline(admin.StackedInline):
+    model = models.ContentResource
+    extra = 2 # how many rows to show
+
+
 class ContentAdmin(admin.ModelAdmin):
     save_on_top = True
     list_display = ('__unicode__', 'datestart', 'type')
-    list_filter = ['datestart', 'type']
+    list_filter = ['datestart', 'type', 'view']
     search_fields = ['title', 'body', 'header']
-    inlines = [ContentParentsInline]
+    raw_id_fields = ['parent']
+
+    inlines = (ResourcesInline,)
 
 #    inlines = [SubdomainInline, DomainAliasInline]
 #    list_display = ('url', 'server', 'manage_nameserver', 'domain_registrar', 'email', 'is_active')
 #    list_editable = ('server', 'manage_nameserver', 'domain_registrar', 'email', 'is_active')
 
 
-admin.site.register(Content, ContentAdmin)
+admin.site.register(models.Content, ContentAdmin)
