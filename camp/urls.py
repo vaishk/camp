@@ -23,6 +23,7 @@ urlpatterns = [
 
     url(r'^.*index.php$', views.redirect_index, name='redirect_index'),
     url(r'^.*event.php$', views.redirect_event, name='redirect_event'),
+    url(r'^.*(/images/.*)$', views.redirect_images, name='redirect_images'),
 
     url(r'^projects/', views.projects, name='projects'),
     url(r'^events/', views.events, name='events'),

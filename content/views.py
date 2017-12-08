@@ -72,3 +72,7 @@ def redirect_event(request):
         return redirect(reverse('content', kwargs={'shortname': content.shortname}))
 
     return redirect(reverse('events'))
+
+def redirect_images(request, image):
+    return redirect(image)
+
