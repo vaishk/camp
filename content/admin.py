@@ -18,8 +18,9 @@ class ServerAdmin(admin.ModelAdmin):
 '''
 
 class ResourcesAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'type', 'mime')
     search_fields = ['href']
-    list_filter = ['mime']
+    list_filter = ['type', 'mime']
 
 admin.site.register(models.Resources, ResourcesAdmin)
 
@@ -32,7 +33,7 @@ class ResourcesInline(admin.StackedInline):
 class ContentAdmin(admin.ModelAdmin):
     save_on_top = True
     list_display = ('__unicode__', 'datestart', 'type')
-    list_filter = ['datestart', 'type', 'view']
+    list_filter = ['datestart', 'type', 'view', 'published']
     search_fields = ['title', 'body', 'header']
     raw_id_fields = ['parent']
 

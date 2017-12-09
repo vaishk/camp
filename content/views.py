@@ -8,16 +8,19 @@ from .models import Content
 
 
 def index(request):
-    latest_content_list = Content.objects.order_by('-datestart')[:5]
+    content = Content.objects.all()
+    content = content.filter(published=True)
+    latest_content_list = ocntent.order_by('-datestart')[:5]
     context = {'latest_content_list': latest_content_list}
     return render(request, 'index.html', context)
 
 def content(request, shortname):
-    content = get_object_or_404(Content, shortname=shortname)
+    content = get_object_or_404(Content, shortname=shortname, published=True)
     return render(request, 'detail.html', {'content': content})
 
 def projects(request):
     content = Content.objects.filter(type__name='ongoing').exclude(shortname='').order_by('-datestart')
+    content = content.filter(published=True)
     return render(request, 'projects.html', {
         'content': content,
         'title': 'Projects'
@@ -26,6 +29,7 @@ def projects(request):
 def events(request):
     content = Content.objects.filter(type__name='events').exclude(shortname='')
     content = Content.objects.filter(type__name='events').exclude(shortname='').order_by('-datestart')
+    content = content.filter(published=True)
     return render(request, 'projects.html', {
         'content': content,
         'title': 'Upcoming Events'
@@ -33,6 +37,7 @@ def events(request):
 
 def works(request):
     content = Content.objects.filter(type__name='works').exclude(shortname='').order_by('-datestart')
+    content = content.filter(published=True)
     return render(request, 'projects.html', {
         'content': content,
         'title': 'Works'
@@ -40,6 +45,7 @@ def works(request):
 
 def texts(request):
     content = Content.objects.filter(type__name='texts').exclude(shortname='')
+    content = content.filter(published=True)
     return render(request, 'projects.html', {
         'content': content,
         'title': 'Texts'
