@@ -10,7 +10,7 @@ from .models import Content
 def index(request):
     content = Content.objects.all()
     content = content.filter(published=True)
-    latest_content_list = ocntent.order_by('-datestart')[:5]
+    latest_content_list = content.order_by('-datestart')[:5]
     context = {'latest_content_list': latest_content_list}
     return render(request, 'index.html', context)
 
