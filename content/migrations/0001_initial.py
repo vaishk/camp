@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'acrolike',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'acronym',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'audios',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -68,7 +68,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'comments',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -80,7 +80,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'content_content',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -92,7 +92,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'content_keyword',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -104,7 +104,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'content_resource',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -116,7 +116,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'content_types',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -128,7 +128,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'keywords',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -146,7 +146,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'people',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -159,7 +159,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'person_content',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -171,7 +171,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'person_resource',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -190,7 +190,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'resources',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -210,7 +210,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'videos',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -222,7 +222,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'views',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
