@@ -15,7 +15,10 @@ def index(request):
     return render(request, 'index.html', context)
 
 def content(request, shortname):
-    content = get_object_or_404(Content, shortname=shortname, published=True)
+    if request.user.is_staff:
+        content = get_object_or_404(Content, shortname=shortname)
+    else:
+        content = get_object_or_404(Content, shortname=shortname, published=True)
     return render(request, 'detail.html', {'content': content})
 
 def projects(request):
