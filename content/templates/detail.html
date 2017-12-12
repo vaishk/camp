@@ -87,8 +87,45 @@
 {% endif %}
 
 {% if content.images.exists %}
+<style>
+    .images {
+        display: grid;
+        grid-template-columns: 128px 128px 128px 128px 128px 128px 128px 128px;
+        grid-gap: 10px;
+    }
+    .images > div {
+        width: 128px;
+        height: 128px;
+        padding: 8px;
+        display: table-cell;
+        text-align: center;
+        position: relative;
+    }
+    .images > div > img {
+        transition: width,height 2s;
+        max-width: 92%;
+        max-height: 92%;
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        margin:auto;
+    }
+    .images > div > img.active {
+        max-width: 92%;
+        max-height: 92%;
+        position: fixed;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        margin:auto;
+        z-index: 1;
+    }
+</style>
+<b>Images:</b> <br>
 <div class="images">
-    <b>Images:</b> <br>
     {% for res in content.images %}
         <div>
             {% if res.is_image %}
@@ -102,8 +139,18 @@
             {% endif %}
         </div>
     {% endfor %}
-    <br clear="all">
 </div>
+<script>
+document.querySelectorAll('.images > div > img').forEach(function(img) {
+    img.addEventListener('click', function() {
+        if (this.classList.contains('active')) {
+            this.classList.remove('active');
+        } else {
+            this.classList.add('active');
+        }
+    });
+});
+</script>
 {% endif %}
 {% endif %}
 </div>
