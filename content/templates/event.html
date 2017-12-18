@@ -2,51 +2,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-	{% for content in featured %}
-	<div class="large-8 medium-8 columns special-column">
-	<img src="http://camputer.org/images/{{content.image}}">
-	<div class="index-text">
-	<h4><a href="/{{content.type}}/{{ content.shortname }}/" class="big-title">{{content.title}} </a></h4>
-	<h6 class="big-date"> <font color="#ef4e5c"> <b> {{ content.datestart }} </b></font> <br/>
-			          Camp Roof </h6>
-	<p> {{content.body|striptags|truncatechars:250}} <a href="/{{content.type}}/{{ content.shortname }}">read more</a> </p>
-	</div>
-	{% endfor %}
-
-	</div>
+    {% include "featured.html" %}
 	<div class="large-4 medium-4 columns">
+        {% if upcoming_events.exists %}
 		<h4 class="sidebar-h4"> Upcoming Events </h4>
-		<div class="row">
-		
-		    {% for content in latest_content_list %}    
-		    {% if content.type_id == 1 %}
-		    
-		    <div class="row right-items">
-			    <div class= "small-12 columns">
-			    	<h6> {{ content.title }} <br />
-			    	{{ content.formatted_header|safe }} 
-			    	</h6>
-			    </div>
-		    </div>
-		    {% endif %}
-		   
-		    {% if content.type_id == 0 %}
-		    <div class="row right-items">
-			    <div class="small-6 columns">
-			        <img src="http://camputer.org/images/{{ content.image }}">
-			    </div>
-			    <div class="small-6 columns">
-			        <a href="/{{content.type}}/{{ content.shortname }}/" class="sidebar-title">{{ content.title }}</a>
-			         <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{ content.datestart }} </b></font> <br/>
-			          We will add a place to fill this text </h6>
-			    </div>
-			</div>
-		    {% endif %}
-
-		    {% endfor %}
-			
-				</div>
-			</div>
-			
+        {% include "event_preview.html" with events=upcoming_events %}
+        {% endif %}
+        {% if ongoing_events.exists %}
+		<h4 class="sidebar-h4"> Ongoing Events </h4>
+        {% include "event_preview.html" with events=ongoing_events %}
+        {% endif %}
+        {% if past_events.exists %}
+		<h4 class="sidebar-h4"> Past Events </h4>
+        {% include "event_preview.html" with events=past_events %}
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

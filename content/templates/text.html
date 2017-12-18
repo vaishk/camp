@@ -6,9 +6,11 @@
 	{% for content in content %}
 	{% if forloop.first %}
 	<div class="large-8 medium-8 columns special-column">
-	<img src="http://camputer.org/images/{{content.image}}">
+    {% if content.image %}
+	<img src="{{content.image_url }}">
+    {% endif %}
 	<div class="index-text">
-	<h4><a href="/{{content.type}}/{{ content.shortname }}/" class="big-title">{{content.title}} </a></h4>
+	<h4><a href="{{ content.get_absolute_url }}/" class="big-title">{{content.title}} </a></h4>
 	<p> {{content.header|striptags}} </p>
 	<p> {{content.body|striptags}} </p>
 	</div>
@@ -23,7 +25,7 @@
 		
 		    {% for content in content %}
 		    <div class="row right-items">
-			        <a href="/{{content.type}}/{{ content.shortname }}/" class="sidebar-title">{{ content.title }}</a>
+			        <a href="{{ content.get_absolute_url }}" class="sidebar-title">{{ content.title }}</a>
 			        <p> {{content.header|striptags|truncatechars:100}} </p>
 			</div>
 		    {% endfor %}

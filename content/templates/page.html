@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="large-8 medium-8 columns special-column">
+    <div class="index-text">
+    <h4>{{content.title}}</h4>
+    {% if content.header %}
+    <p>
+        {{content.formatted_header|safe}}
+    </p>
+    {% endif %}
+    <p>
+        {{content.formatted_body|safe}}
+    </p>
+    </div>
+</div>
+{% endblock %}

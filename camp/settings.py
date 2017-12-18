@@ -18,9 +18,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')lzq#s+we0&7f=(@g)e2^9n@_fo5vz7l8q7py%5qx%_2dq-o!#'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -138,13 +135,35 @@ STATIC_ROOT = ''
 
 STATICFILES_DIRS = (os.path.join(SITE_ROOT, 'static'), )
 
-MARKDOWNX_MEDIA_PATH = os.path.abspath('camp/static/images')
+MARKDOWNX_MEDIA_PATH = os.path.join(BASE_ROOT, 'data/images')
+
 
 MARKDOWNX_EDITOR_RESIZABLE = True
 
-MEDIA_URL = '/static/images/'
-MEDIA_ROOT = '/Users/vaishk/camp/camp/static/images/'
+MEDIA_URL = '/images/'
+MEDIA_ROOT = os.path.join(BASE_ROOT, 'data/images')
+
+IMAGE_PREFIX = 'http://studio.camp/images/'
+
 try:
     from local_settings import *
 except:
     pass
+
+# Make this unique, creates random key first at first time.
+try:
+    SECRET_KEY
+except NameError:
+    SECRET_FILE = os.path.join(BASE_DIR, 'secret.txt')
+    try:
+        SECRET_KEY = open(SECRET_FILE).read().strip()
+    except IOError:
+        try:
+            from django.utils.crypto import get_random_string
+            chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+            SECRET_KEY = get_random_string(50, chars)
+            secret = open(SECRET_FILE, 'w')
+            secret.write(SECRET_KEY)
+            secret.close()
+        except IOError:
+            Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)

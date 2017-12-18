@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from markdownx.models import MarkdownxField
+
+from django.conf import settings
+from django.core.validators import MaxLengthValidator
 from django.db import models
+from django.utils.html import mark_safe
+
+from markdownx.models import MarkdownxField
 from markdownx.utils import markdownify
+import ox
 
 # Create your models here.
 
@@ -55,10 +61,11 @@ class Comments(models.Model): #not used
 
 class Content(models.Model):
     type = models.ForeignKey("ContentTypes", db_column="type")
-    shortname = models.CharField(db_column='shortName', max_length=255, unique=True)  # Field name made lowercase.
+    shortname = models.CharField(db_column='shortName', max_length=255)  # Field name made lowercase.
     title = models.CharField(max_length=255)
-    header = MarkdownxField()
-    body = MarkdownxField()
+    header = MarkdownxField(blank=True, null=True, default='')
+    body = MarkdownxField(blank=True, null=True, default='')
+    teaser = models.TextField(blank=True, null=True, validators=[MaxLengthValidator(200)])
     schedule = models.TextField(blank=True, null=True)    
     schedulebutton = models.CharField(db_column='scheduleButton', max_length=255, blank=True, null=True)  # Field name made lowercase.
     optbtn2 = models.CharField(db_column='optBtn2', max_length=127, blank=True, null=True)  # Field name made lowercase.
@@ -70,10 +77,11 @@ class Content(models.Model):
     postedby = models.CharField(db_column='postedBy', max_length=50, blank=True, null=True)  # Field name made lowercase.
     datestart = models.DateField(db_column='dateStart', blank=True, null=True)  # Field name made lowercase.
     dateend = models.DateField(db_column='dateEnd', blank=True, null=True)  # Field name made lowercase.
-    dateadded = models.DateTimeField(db_column='dateAdded')  # Field name made lowercase.
-    datemodified = models.DateTimeField(db_column='dateModified', blank=True, null=True)  # Field name made lowercase.
-    published = models.IntegerField()
-    view = models.ForeignKey("Views", null=True, blank=True, db_column="view")
+    dateadded = models.DateTimeField(db_column='dateAdded', auto_now_add=True, editable=True)  # Field name made lowercase.
+    datemodified = models.DateTimeField(db_column='dateModified', blank=True, null=True, auto_now=True)  # Field name made lowercase.
+    published = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False)
+    view = models.ForeignKey("Views", null=True, blank=True, db_column="view", editable=False)
     place = models.CharField(max_length=255, null=True, blank=True)
     parentid = models.IntegerField(null=True, db_column='parentID', blank=True) # Field name made lowercase.
     parents = models.ManyToManyField('Content', through='ContentContent', related_name= "children")
@@ -83,16 +91,40 @@ class Content(models.Model):
 
     @property
     def formatted_header(self):
-        return markdownify(self.header)
+        return mark_safe(markdownify(self.header))
 
     @property
     def formatted_body(self):
-        return markdownify(self.body)
+        return mark_safe(markdownify(self.body))
+
+    @property
+    def formatted_teaser(self):
+        if self.teaser:
+            value = self.teaser
+        elif self.header:
+            value = ox.strip_tags(ox.decode_html(self.header))[:100]
+        else:
+            value = ''
+        return mark_safe(value)
 
     @property
     def typefilter(self):
         return self.type
-    
+
+    @property
+    def image_url(self):
+        if self.image:
+            return settings.IMAGE_PREFIX + self.image
+
+    def get_absolute_url(self):
+        if self.shortname:
+            section = self.type.name
+            if section == 'news':
+                section = 'events'
+            if section == 'page':
+                return '/' + self.shortname
+            return '/%s/%s' %(section, self.shortname)
+
 
     class Meta:
         managed = True

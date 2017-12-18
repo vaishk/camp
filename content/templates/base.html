@@ -19,13 +19,13 @@
 
     <div class="off-canvas position-right" id="offCanvasRight" data-off-canvas data-position="right">
     <ul class="vertical-menu">
-        <li><a href="http://127.0.0.1:8000/">HOME</a></li>
-        <li>ABOUT</li>
-        <li><a href="/project">PROJECTS</a></li>
-        <li><a href="/event">EVENTS</a></li>
-        <li><a href="/work">WORKS</a></li>
-        <li>TEXTS</li>
-        <li>CONTACT</li>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/about">ABOUT</a></li>
+        <li><a href="/projects">PROJECTS</a></li>
+        <li><a href="/events">EVENTS</a></li>
+        <li><a href="/works">WORKS</a></li>
+        <li><a href="/texts">TEXTS</a></li>
+        <li><a href="/contact">CONTACT</a></li>
       </ul>
     </div>
 
@@ -43,13 +43,10 @@
 
   {% load static %}
     <script src="{% static "js/jquery.js" %}"></script>
-    <script src="{% static "js/app.js" %}"></script>
     <script src="{% static "js/foundation.js" %}"></script>
+    <script src="{% static "js/app.js" %}"></script>
     <script src="{% static "js/what-input.js" %}"></script>
     <script src="{% static "js/jquery.bxslider.js" %}"></script>
-    <script>
-    $(document).foundation();
-    </script>
     <script type="text/javascript">
       $(document).ready(function(){
         var slider = $('.slider1').bxSlider({

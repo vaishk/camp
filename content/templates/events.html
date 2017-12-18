@@ -5,9 +5,11 @@
 {% block content %}
 
 <div class="large-8 medium-8 columns special-column">
-	<img src="http://camputer.org/images/{{events.image}}">
+    {% if events.image %}
+	<img src="{{events.image_url}}">
+    {% endif %}
 	<div class="index-text">
-	<h4><a href="/{{events.type}}/{{ events.shortname }}/" class="big-title">{{events.title}} </a></h4>
+	<h4><a href="{{ events.get_absolute_url }}/" class="big-title">{{events.title}} </a></h4>
 	<p> {{events.formatted_header|safe}} </p>
 	<p> {{events.formatted_body|safe}} </p>
 	{% if gallery %}
@@ -29,12 +31,16 @@
 		{% for child in events.children.all %}
 		<div class="row related-row">
 		<div class="small-6 columns">
-			<img src="http://camputer.org/images/{{ child.image }}">
+			<img src="{{ child.image_url }}">
 		</div>
 		<div class="small-6 columns">
-		<h6><a href="http://127.0.0.1:8000/{{child.type}}/{{child.shortname}}" class="sidebar-title"> {{child}} </a> </h6>
-		<h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{ child.datestart }} {% if child.dateend %} - {{child.dateend}} {% endif %} </b></font> <br/>
-			          {{child.place}} </h6>
+		<h6><a href="{{ child.get_absolute_url }}" class="sidebar-title"> {{child}} </a> </h6>
+		<h6 class="sidebar-date">
+            <font color="#ef4e5c">
+                <b> {{ child.datestart }} {% if child.dateend %} - {{child.dateend}} {% endif %} </b>
+            </font>
+            {% if content.place %}<br/>{{content.place}}{% endif%}
+            </h6>
 
 		</div>
 		</div>
@@ -47,12 +53,12 @@
 		    
 		    <div class="row right-items">
 			    <div class="small-6 columns">
-			        <img src="http://camputer.org/images/{{ events.image }}">
+			        <img src="{{ events.image_url }}">
 			    </div>
 			    <div class="small-6 columns">
-			        <a href="/{{events.type}}/{{ events.shortname }}/"  >{{ events.title }}</a>
+			        <a href="{{ events.get_absolute_url }}/"  >{{ events.title }}</a>
 			         <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{ events.datestart }} </b></font> <br/></h6>
-			          <p> {{events.header|striptags|truncatechars:200}} </p>
+			          <p> {{events.header|striptags|truncatechars:200|safe}} </p>
 			    </div>
 			</div>
 		    

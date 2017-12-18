@@ -14,6 +14,7 @@ from photologue.models import Gallery
 class ContentParentsInline(admin.TabularInline):
     model = ContentContent
     fk_name = 'contentid2'
+    raw_id_fields = ['contentid1']
 
 class ImagesInline(admin.StackedInline):
     model = Image
@@ -48,9 +49,9 @@ class GalleryAdmin(GalleryAdminDefault):
 
 class ContentAdmin(admin.ModelAdmin):
     save_on_top = True
-    list_display = ('__unicode__', 'datestart', 'type')
+    list_display = ('__unicode__', 'datestart', 'shortname', 'type')
     list_filter = ['datestart', 'type']
-    search_fields = ['title', 'body', 'header']
+    search_fields = ['title', 'body', 'header', 'shortname']
     inlines = [ContentParentsInline, ImagesInline, FileInline, LinkInline]
     formfield_overrides = {
         models.TextField: {'widget': AdminMarkdownxWidget},

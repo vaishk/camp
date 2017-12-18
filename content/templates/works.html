@@ -5,9 +5,9 @@
 {% block content %}
 
 <div class="large-8 medium-8 columns special-column">
-	<img src="http://camputer.org/images/{{works.image}}">
+	<img src="{{ works.image_url }}">
 	<div class="index-text">
-	<h4><a href="/{{works.type}}/{{ works.shortname }}/" class="big-title">{{works.title}} </a></h4>
+	<h4><a href="{{ works.get_absolute_url }}" class="big-title">{{works.title}} </a></h4>
 	<p> {{works.formatted_header|safe}} </p>
 	<p> {{works.formatted_body|safe}} </p>
 </div>
@@ -21,10 +21,10 @@
 		{% for child in works.children.all %}
 		<div class="row related-row">
 		<div class="small-6 columns">
-			<img src="http://camputer.org/images/{{ child.image }}">
+			<img src="{{ child.image_url }}">
 		</div>
 		<div class="small-6 columns">
-		<h6><a href="http://127.0.0.1:8000/{{child.type}}/{{child.shortname}}" class="sidebar-title"> {{child}} </a> </h6>
+		<h6><a href="{{ child.get_absolute_url }}" class="sidebar-title"> {{child}} </a> </h6>
 		</div>
 		</div>
 		{% endfor %}
@@ -35,10 +35,10 @@
 		    {% for works in latest_content_list %}
 		    <div class="row right-items">
 			    <div class="small-6 columns">
-			        <img src="http://camputer.org/images/{{ works.image }}">
+			        <img src="{{ works.image_url }}">
 			    </div>
 			    <div class="small-6 columns">
-			        <a href="/{{works.type}}/{{ works.shortname }}/" class="sidebar-title">{{ works.title }}</a>
+			        <a href="{{ works.get_absolute_url }}" class="sidebar-title">{{ works.title }}</a>
 			    	<p> {{works.header|striptags|truncatechars:100}} </p>
 			    </div>
 			</div>

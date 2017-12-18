@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="row">
+    {% for content in results %}
+    {% if content.type.name == 'news' %}
+    <div class="row">
+        <div class= "small-12 columns">
+            <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{content.datestart}} </b> 
+            {{ content.title }} <br />
+            {{ content.formatted_header|striptags|safe }} </font> 
+            </h6>
+        </div>
+    </div>
+    {% elif content.type.name == 'events' %}
+    <div class="row">
+        <div class="small-6 columns">
+            <img src="{{ content.image_url }}">
+        </div>
+        <div class="small-6 columns">
+            <a href="{{ content.get_absolute_url }}" class="sidebar-title">{{ content.title }}</a>
+             <h6 class="sidebar-date"> <font color="#ef4e5c">  <b> {{ content.datestart }} {% if content.dateend %} - {{content.dateend}} {% endif %} </b></font> <br/>
+              {{content.place}} </h6>
+              <p> {{content.header|striptags|truncatechars:100|safe}} </p>
+              <a href="{{ content.get_absolute_url }}">read more</a> </p>
+        </div>
+    </div>
+    {% else %}
+    <div>
+        Add view for content type: {{content.type}}
+    </div>
+
+    {% endif %}
+    {% endfor %}
+    <br>
+    <br>
+</div>
+{% endblock %}
