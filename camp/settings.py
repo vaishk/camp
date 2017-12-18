@@ -139,7 +139,6 @@ MARKDOWNX_EDITOR_RESIZABLE = True
 
 MEDIA_URL = '/static/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data/images')
-
 IMAGE_PREFIX = 'http://studio.camp/images/'
 
 try:
