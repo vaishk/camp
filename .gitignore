@@ -2,3 +2,4 @@
 local_settings.py
 camp.json
 *.swp
+secret.txt
