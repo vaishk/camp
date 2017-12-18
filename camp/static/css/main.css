@@ -23,7 +23,7 @@ body, h1, h2, h3, h4, h5, h6 {
 .sidebar-h4 {
 	font-weight: 600;
 	text-transform: uppercase;
-	font-size: 1em;
+	font-size: 14px;
 	color: #ffffff;
 }
 
@@ -31,7 +31,7 @@ body, h1, h2, h3, h4, h5, h6 {
 	text-transform: capitalize;
 	font-weight: 800;
 	font-style: italic;
-	font-size: 1em;
+	font-size: 14px;
 	color: #1779ba;
 }
 
@@ -45,7 +45,7 @@ a:focus, a:hover {
 
 .sidebar-date {
 	text-transform: uppercase;
-	font-size: 0.7em;
+	font-size: 10px;
 }
 
 .news {
