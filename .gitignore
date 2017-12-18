@@ -1,5 +1,9 @@
+static
+data
 *.pyc
+__pycache__
 local_settings.py
 camp.json
 *.swp
+*.swo
 secret.txt
