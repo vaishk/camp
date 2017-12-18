@@ -53,10 +53,10 @@
 		    
 		    <div class="row right-items">
 			    <div class="small-6 columns">
-			        <img src="{{ events.image_url }}">
+			        <a href="{{ events.get_absolute_url }}/"> <img src="{{ events.image_url }}"> </a>
 			    </div>
 			    <div class="small-6 columns">
-			        <a href="{{ events.get_absolute_url }}/"  >{{ events.title }}</a>
+			        <a href="{{ events.get_absolute_url }}/" class="sidebar-title"  >{{ events.title }}</a>
 			         <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{ events.datestart }} </b></font> <br/></h6>
 			          <p> {{events.header|striptags|truncatechars:200|safe}} </p>
 			    </div>

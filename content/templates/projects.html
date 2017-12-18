@@ -23,7 +23,7 @@
 		{% for child in projects.children.all %}
 		<div class="row related-row">
 		<div class="small-6 columns">
-			<img src="{{ child.image_url }}">
+			<a href="{{ child.get_absolute_url }}"> <img src="{{ child.image_url }}"> </a>
 		</div>
 		<div class="small-6 columns">
 		<h6><a href="{{ child.get_absolute_url }}" class="sidebar-title"> {{child}} </a> </h6>
@@ -37,7 +37,7 @@
 		    {% for projects in latest_content_list %}
 		    <div class="row right-items">
 			    <div class="small-6 columns">
-			        <img src="{{ projects.image_url }}">
+			       <a href="{{ projects.get_absolute_url }}"> <img src="{{ projects.image_url }}"> </a>
 			    </div>
 			    <div class="small-6 columns">
 			        <a href="{{ projects.get_absolute_url }}/" class="sidebar-title">{{ projects.title }}</a>
