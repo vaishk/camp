@@ -68,7 +68,7 @@ def event(request):
     return render(request, 'event.html', context)
 
 
-def events(request, shortname):
+def events(request, shortname=None):
     if not shortname:
         return event(request)
     events = get_object_or_404(Content, shortname=shortname, type__name__in=['news', 'events'])
@@ -88,7 +88,7 @@ def projects(request, shortname=None):
     latest_content_list = Content.objects.filter(type__name='projects').order_by('-datestart')
     return render(request, 'projects.html', {'projects': projects, 'latest_content_list': latest_content_list, 'gallery':gallery})
 
-def works(request, shortname):
+def works(request, shortname=None):
     if not shortname:
         return section_index(request, ['works'], 'Works')
     works = get_object_or_404(Content, shortname=shortname, type__name='works')
@@ -98,7 +98,7 @@ def works(request, shortname):
     latest_content_list = Content.objects.filter(type__name='works')
     return render(request, 'works.html', {'works': works, 'latest_content_list': latest_content_list, 'gallery':gallery})
 
-def texts(request, shortname):
+def texts(request, shortname=None):
     if not shortname:
         return section_index(request, ['texts'], 'Texts')
     texts = get_object_or_404(Content, shortname=shortname, type__name='texts')
