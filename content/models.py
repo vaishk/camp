@@ -83,7 +83,7 @@ class Content(models.Model):
     featured = models.BooleanField(default=False)
     view = models.ForeignKey("Views", null=True, blank=True, db_column="view", editable=False)
     place = models.CharField(max_length=255, null=True, blank=True)
-    parentid = models.IntegerField(null=True, db_column='parentID', blank=True) # Field name made lowercase.
+    parentid = models.IntegerField(null=True, db_column='parentID', blank=True, editable=False) # delete
     parents = models.ManyToManyField('Content', through='ContentContent', related_name= "children")
 
     def __unicode__(self):
@@ -142,6 +142,13 @@ class ContentContent(models.Model):
         # managed = False
         db_table = 'content_content'
 
+    def reverse(self):
+        r, created = ContentContent.objects.get_or_create(contentid1=self.contentid2, contentid2=self.contentid1)
+        return r
+
+    def save(self, *args, **kwargs):
+        super(ContentContent, self).save(*args, **kwargs)
+        self.reverse()
 
 class ContentKeyword(models.Model):
     contentid = models.IntegerField(db_column='contentID')  # Field name made lowercase.

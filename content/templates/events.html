@@ -12,6 +12,7 @@
 	<h4><a href="{{ events.get_absolute_url }}/" class="big-title">{{events.title}} </a></h4>
 	<p> {{events.formatted_header|safe}} </p>
 	<p> {{events.formatted_body|safe}} </p>
+    {% include "opt.html" with content=events %}
 	{% if gallery %}
 	<h6><strong>Gallery: {{gallery.title}}</strong></h6>
 	<ul class="clearing-thumbs" data-clearing>
