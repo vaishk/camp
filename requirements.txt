@@ -1,0 +1,6 @@
+django<2
+django-markdownx
+django-photologue
+django-braces
+django-app-namespace-template-loader
+ox
