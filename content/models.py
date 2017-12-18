@@ -227,7 +227,14 @@ class PersonResource(models.Model):
 
 
 class Resources(models.Model):
-    type = models.IntegerField()
+
+    TYPE_CHOICES = (
+        (1, "Resources"),
+        (2, "Images"),
+        (3, "Links"),
+    )
+
+    type = models.IntegerField(choices=TYPE_CHOICES)
     href = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     mime = models.CharField(max_length=10, blank=True, null=True)
