@@ -118,13 +118,15 @@ class Content(models.Model):
 
     def get_absolute_url(self):
         if self.shortname:
+            parts = []
             section = self.type.name
             if section == 'news':
                 section = 'events'
             if section == 'page':
-                return '/' + self.shortname
-            return '/%s/%s' %(section, self.shortname)
-
+                parts = [self.shortname]
+            else:
+                parts = [section, self.shortname]
+            return '/' + '/'.join(parts)
 
     class Meta:
         managed = True

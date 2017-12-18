@@ -4,7 +4,7 @@ from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views.generic.list import ListView
@@ -19,9 +19,12 @@ from .models import Content, ContentContent
 def index(request):
     now = datetime.now()
     display_events = ['news', 'events']
-    upcoming_events = Content.objects.filter(datestart__gt=now).filter(type__name__in=display_events).order_by('-datestart')[:12]
-    ongoing_events = Content.objects.filter(datestart__lt=now, dateend__gte=now).filter(type__name__in=display_events).order_by('-datestart')[:12]
-    past_events = Content.objects.filter(dateend__lt=now).filter(type__name__in=display_events).order_by('-datestart')[:12]
+    base = Content.objects.filter(type__name__in=display_events).order_by('-datestart')
+    base = base.filter(published=True)
+    upcoming_events = base.filter(datestart__gt=now)[:12]
+    ongoing_events = base.filter(datestart__lt=now, dateend__gte=now)[:12]
+    past_events = base.filter(Q(dateend__lt=now)|Q(dateend=None, datestart__lt=now))[:12]
+
     homepage = Content.objects.filter(type__name='homepage').order_by('-datestart')[:1]
     context = {
         'upcoming_events': upcoming_events,
@@ -30,22 +33,15 @@ def index(request):
         'homepage': homepage}
     return render(request, 'index.html', context)
 
-def project(request):
-    type = 'projects'
-    featured = Content.objects.filter(type__name=type, featured=True).order_by('-datestart')[:1]
-    content = Content.objects.filter(type__name=type).order_by('-datestart')
-    return render(request, 'section_index.html', {
-        'section': 'Projects',
-        'featured': featured,
-        'content': content
-    })
 
-def work(request):
-    type = 'works'
-    featured = Content.objects.filter(type__name=type, featured=True).order_by('-datestart')[:1]
-    content = Content.objects.filter(type__name=type).order_by('-datestart')
+def section_index(request, types, section):
+    featured = Content.objects.filter(type__name__in=types, featured=True).order_by('-datestart')[:1]
+    content = Content.objects.filter(type__name__in=types).order_by('-datestart')
+    if featured:
+        content = content.exclude(pk=featured[0].pk)
+    content = content.filter(published=True)
     return render(request, 'section_index.html', {
-        'section': 'Works',
+        'section': section,
         'featured': featured,
         'content': content
     })
@@ -53,11 +49,16 @@ def work(request):
 def event(request):
     now = datetime.now()
     display_events = ['events']
-    upcoming_events = Content.objects.filter(datestart__gt=now).filter(type__name__in=display_events).order_by('-datestart')
-    ongoing_events = Content.objects.filter(datestart__lt=now, dateend__gte=now).filter(type__name__in=display_events).order_by('-datestart')
-    past_events = Content.objects.filter(Q(dateend__lt=now)|Q(dateend=None, datestart__lt=now)).filter(type__name__in=display_events).order_by('-datestart')[:10]
-
     featured = Content.objects.filter(type__name='events', featured=True).order_by('-datestart')[:1]
+    base = Content.objects.filter(type__name__in=display_events).order_by('-datestart')
+    base = base.filter(published=True)
+    if featured:
+        base = base.exclude(pk=featured[0].pk)
+
+    upcoming_events = base.filter(datestart__gt=now).order_by('-datestart')
+    ongoing_events = base.filter(datestart__lt=now, dateend__gte=now).order_by('-datestart')
+    past_events = base.filter(Q(dateend__lt=now)|Q(dateend=None, datestart__lt=now))[:10]
+
     context = {
         'upcoming_events': upcoming_events,
         'ongoing_events': ongoing_events,
@@ -66,44 +67,40 @@ def event(request):
     }
     return render(request, 'event.html', context)
 
-def text(request):
-    type = 'texts'
-    featured = Content.objects.filter(type__name=type, featured=True).order_by('-datestart')[:1]
-    content = Content.objects.filter(type__name=type).order_by('-datestart')
-    return render(request, 'section_index.html', {
-        'section': 'Texts',
-        'featured': featured,
-        'content': content
-    })
-
 
 def events(request, shortname):
     if not shortname:
         return event(request)
     events = get_object_or_404(Content, shortname=shortname, type__name__in=['news', 'events'])
+    if not events.published and not request.user.is_admin:
+        raise Http404
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='events').order_by('-datestart')[:10]
     return render(request, 'events.html', {'events': events, 'latest_content_list': latest_content_list, 'gallery': gallery})
 
-def projects(request, shortname):
+def projects(request, shortname=None):
     if not shortname:
-        return project(request)
+        return section_index(request, ['projects'], 'Projects')
     projects = get_object_or_404(Content, shortname=shortname, type__name='projects')
+    if not projects.published and not request.user.is_admin:
+        raise Http404
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='projects').order_by('-datestart')
     return render(request, 'projects.html', {'projects': projects, 'latest_content_list': latest_content_list, 'gallery':gallery})
 
 def works(request, shortname):
     if not shortname:
-        return work(request)
+        return section_index(request, ['works'], 'Works')
     works = get_object_or_404(Content, shortname=shortname, type__name='works')
+    if not works.published and not request.user.is_admin:
+        raise Http404
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='works')
     return render(request, 'works.html', {'works': works, 'latest_content_list': latest_content_list, 'gallery':gallery})
 
 def texts(request, shortname):
     if not shortname:
-        return text(request)
+        return section_index(request, ['texts'], 'Texts')
     texts = get_object_or_404(Content, shortname=shortname, type__name='texts')
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='texts')
@@ -116,6 +113,8 @@ def texts(request, shortname):
 
 def page(request, shortname):
     content = get_object_or_404(Content, shortname=shortname, type__name='page')
+    if not content.published and not request.user.is_admin:
+        raise Http404
     return render(request, 'page.html', {'content': content})
 
 
@@ -148,11 +147,12 @@ def redirect_index(request):
 def redirect_event(request):
     shortname = request.GET.get('this')
     if shortname:
-        return redirect(reverse('content', kwargs={'shortname': shortname}))
+        content = get_object_or_404(Content, shortname=shortname)
+        return redirect(content.get_absolute_url())
     id = request.GET.get('id')
     if id:
         content = get_object_or_404(Content, id=id)
-        return redirect(reverse('content', kwargs={'shortname': content.shortname}))
+        return redirect(content.get_absolute_url())
 
     return redirect(reverse('events'))
 
