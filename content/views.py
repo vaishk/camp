@@ -55,7 +55,7 @@ def event(request):
     display_events = ['events']
     upcoming_events = Content.objects.filter(datestart__gt=now).filter(type__name__in=display_events).order_by('-datestart')
     ongoing_events = Content.objects.filter(datestart__lt=now, dateend__gte=now).filter(type__name__in=display_events).order_by('-datestart')
-    past_events = Content.objects.filter(Q(dateend__lt=now)|Q(dateend=None, datestart__lt=now)).filter(type__name__in=display_events).order_by('-datestart')
+    past_events = Content.objects.filter(Q(dateend__lt=now)|Q(dateend=None, datestart__lt=now)).filter(type__name__in=display_events).order_by('-datestart')[:10]
 
     featured = Content.objects.filter(type__name='events', featured=True).order_by('-datestart')[:1]
     context = {
@@ -82,7 +82,7 @@ def events(request, shortname):
         return event(request)
     events = get_object_or_404(Content, shortname=shortname, type__name__in=['news', 'events'])
     gallery = get_or_none(Gallery, slug=shortname)
-    latest_content_list = Content.objects.filter(type__name='events').order_by('-datestart')
+    latest_content_list = Content.objects.filter(type__name='events').order_by('-datestart')[:10]
     return render(request, 'events.html', {'events': events, 'latest_content_list': latest_content_list, 'gallery': gallery})
 
 def projects(request, shortname):
@@ -90,7 +90,7 @@ def projects(request, shortname):
         return project(request)
     projects = get_object_or_404(Content, shortname=shortname, type__name='projects')
     gallery = get_or_none(Gallery, slug=shortname)
-    latest_content_list = Content.objects.filter(type__name='projects')
+    latest_content_list = Content.objects.filter(type__name='projects').order_by('-datestart')
     return render(request, 'projects.html', {'projects': projects, 'latest_content_list': latest_content_list, 'gallery':gallery})
 
 def works(request, shortname):
@@ -104,7 +104,7 @@ def works(request, shortname):
 def texts(request, shortname):
     if not shortname:
         return text(request)
-    texts = get_object_or_404(Content, shortname=shortname)
+    texts = get_object_or_404(Content, shortname=shortname, type__name='texts')
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='texts')
     return render(request, 'texts.html', {

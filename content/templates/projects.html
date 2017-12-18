@@ -12,6 +12,7 @@
 	<h4><a href="{{ projects.get_absolute_url }}/" class="big-title">{{projects.title}} </a></h4>
 	<p> {{projects.formatted_header|safe}} </p>
 	<p> {{projects.formatted_body|safe}} </p>
+    {% include "opt.html" with content=projects %}
 </div>
 </div>
 
