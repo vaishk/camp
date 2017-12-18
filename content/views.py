@@ -72,7 +72,7 @@ def events(request, shortname=None):
     if not shortname:
         return event(request)
     events = get_object_or_404(Content, shortname=shortname, type__name__in=['news', 'events'])
-    if not events.published and not request.user.is_admin:
+    if not events.published and not request.user.is_staff:
         raise Http404
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='events').order_by('-datestart')[:10]
@@ -82,7 +82,7 @@ def projects(request, shortname=None):
     if not shortname:
         return section_index(request, ['projects'], 'Projects')
     projects = get_object_or_404(Content, shortname=shortname, type__name='projects')
-    if not projects.published and not request.user.is_admin:
+    if not projects.published and not request.user.is_staff:
         raise Http404
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='projects').order_by('-datestart')
@@ -92,7 +92,7 @@ def works(request, shortname=None):
     if not shortname:
         return section_index(request, ['works'], 'Works')
     works = get_object_or_404(Content, shortname=shortname, type__name='works')
-    if not works.published and not request.user.is_admin:
+    if not works.published and not request.user.is_staff:
         raise Http404
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='works')
@@ -113,7 +113,7 @@ def texts(request, shortname=None):
 
 def page(request, shortname):
     content = get_object_or_404(Content, shortname=shortname, type__name='page')
-    if not content.published and not request.user.is_admin:
+    if not content.published and not request.user.is_staff:
         raise Http404
     return render(request, 'page.html', {'content': content})
 
