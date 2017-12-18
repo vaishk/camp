@@ -135,9 +135,7 @@ STATIC_ROOT = ''
 
 STATICFILES_DIRS = (os.path.join(SITE_ROOT, 'static'), )
 
-MARKDOWNX_MEDIA_PATH = os.path.join(BASE_DIR, 'data/images')
-MARKDOWNX_MEDIA_PATH = os.path.join(BASE_DIR, 'static/images')
-
+MARKDOWNX_MEDIA_PATH = 'images/markdown'
 
 MARKDOWNX_EDITOR_RESIZABLE = True
 
