@@ -15,7 +15,7 @@
                 {% endif %}
 			    <div class="small-6 columns">
 			        <a href="{{ content.get_absolute_url }}/" class="sidebar-title">{{ content.title }}</a>
-			        <p> {{content.header|striptags|truncatechars:100}} </p>
+                    <p> {{content.formatted_teaser}} </p>
 			    </div>
 			</div>
 		    {% endfor %}

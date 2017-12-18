@@ -102,7 +102,7 @@ class Content(models.Model):
         if self.teaser:
             value = self.teaser
         elif self.header:
-            value = ox.strip_tags(ox.decode_html(self.header))[:100]
+            value = ox.strip_tags(ox.decode_html(markdownify(self.header)))[:100]
         else:
             value = ''
         return mark_safe(value)
