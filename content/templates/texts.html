@@ -23,7 +23,7 @@
 		<div class="row related-row">
         {% if child.image %}
 		<div class="small-6 columns">
-			<img src="{{ child.image_url }}">
+			<a href="{{ child.get_absolute_url }}"> <img src="{{ child.image_url }}"> </a>
 		</div>
         {% endif %}
 		<div class="small-6 columns">
@@ -39,7 +39,7 @@
 		    <div class="row right-items">
                 {% if texts.image %}
 			    <div class="small-6 columns">
-			        <img src="{{ texts.image_url }}">
+			        <a href="{{ texts.get_absolute_url }}"> <img src="{{ texts.image_url }}"></a>
 			    </div>
                 {% endif %}
 			    <div class="small-6 columns">
