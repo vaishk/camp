@@ -5,15 +5,15 @@
         {% endif %}
     </div>
     <div class="small-6 columns">
-        <h6><a href="{{ content.get_absolute_url }}" class="sidebar-title"> {{content.title}} </a> </h6>
+        <a href="{{ content.get_absolute_url }}" class="sidebar-title"> {{content.title}} </a>
+        {% if content.type.name == 'events' %}
         <h6 class="sidebar-date">
-            {% if content.type.name == 'events' %}
             <font color="#ef4e5c">
                 <b> {{ content.datestart }} {% if content.dateend %} - {{content.dateend}} {% endif %} </b>
             </font>
             {% if content.place %}<br/>{{content.place}}{% endif%}
-            {% endif %}
-            </h6>
-            <p> {{ content.formatted_teaser }} </p>
+        </h6>
+        {% endif %}
+        <p> {{ content.formatted_teaser }} </p>
         </div>
 </div>
