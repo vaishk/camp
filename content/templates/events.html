@@ -27,26 +27,7 @@
 
 
 	<div class="large-4 medium-4 columns">
-		{% if events.children.all %}
-		<h4 class="sidebar-h4"> Related </h4>
-		{% for child in events.children.all %}
-		<div class="row related-row">
-		<div class="small-6 columns">
-			<img src="{{ child.image_url }}">
-		</div>
-		<div class="small-6 columns">
-		<h6><a href="{{ child.get_absolute_url }}" class="sidebar-title"> {{child}} </a> </h6>
-		<h6 class="sidebar-date">
-            <font color="#ef4e5c">
-                <b> {{ child.datestart }} {% if child.dateend %} - {{child.dateend}} {% endif %} </b>
-            </font>
-            {% if content.place %}<br/>{{content.place}}{% endif%}
-            </h6>
-
-		</div>
-		</div>
-		{% endfor %}
-		{% endif %}
+        {% include "related.html" with related=events.children.all %}
 		<h4 class="sidebar-h4">Events </h4>
 		<div class="row">
 		

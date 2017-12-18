@@ -19,37 +19,25 @@
 {% if latest_content_list %}
 
 	<div class="large-4 medium-4 columns">
-	{% if projects.children.all %}
-		<h4 class="sidebar-h4"> Related </h4>
-		{% for child in projects.children.all %}
-		<div class="row related-row">
-		<div class="small-6 columns">
-			<a href="{{ child.get_absolute_url }}"> <img src="{{ child.image_url }}"> </a>
-		</div>
-		<div class="small-6 columns">
-		<h6><a href="{{ child.get_absolute_url }}" class="sidebar-title"> {{child}} </a> </h6>
-		</div>
-		</div>
-		{% endfor %}
-		{% endif %}
-		<h4 class="sidebar-h4">Projects </h4>
-		<div class="row">
-		
-		    {% for projects in latest_content_list %}
-		    <div class="row right-items">
-			    <div class="small-6 columns">
-			       <a href="{{ projects.get_absolute_url }}"> <img src="{{ projects.image_url }}"> </a>
-			    </div>
-			    <div class="small-6 columns">
-			        <a href="{{ projects.get_absolute_url }}" class="sidebar-title">{{ projects.title }}</a>
-                    <p> {{projects.formatted_teaser}} </p>
-			    </div>
-			</div>
-		    {% endfor %}
-			{% else %}
-			    <p>No projects.</p>
-			{% endif %}
-				</div>
-			</div>		
+    {% include "related.html" with related=projects.children.all %}
+    <h4 class="sidebar-h4">Projects </h4>
+    <div class="row">
+    
+        {% for projects in latest_content_list %}
+        <div class="row right-items">
+            <div class="small-6 columns">
+               <a href="{{ projects.get_absolute_url }}"> <img src="{{ projects.image_url }}"> </a>
+            </div>
+            <div class="small-6 columns">
+                <a href="{{ projects.get_absolute_url }}" class="sidebar-title">{{ projects.title }}</a>
+                <p> {{projects.formatted_teaser}} </p>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+            <p>No projects.</p>
+        {% endif %}
+        </div>
+    </div>
 
 {% endblock %}
