@@ -13,6 +13,7 @@
 	<p> {{events.formatted_header|safe}} </p>
 	<p> {{events.formatted_body|safe}} </p>
     {% include "opt.html" with content=events %}
+    {% include "links.html" with content=events %}
     {% include "gallery.html" with gallery=gallery %}
 </div>
 </div>

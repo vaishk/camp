@@ -1,0 +1,12 @@
+{% if content.links.exists %}
+<div class="links">
+    <b>Links:</b>
+    <ul>
+    {% for res in content.links %}
+    <li>
+        <a href="{{res.get_absolute_url}}">{{res.description|default:res.href}}</a>
+    </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
