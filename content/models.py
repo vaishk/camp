@@ -321,10 +321,13 @@ class Image(models.Model):
 
 class Link(models.Model):
     content = models.ForeignKey('Content')
-    url = models.URLField()
+    url = models.URLField(max_length=4096)
     description = models.TextField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     order = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return self.url
 
 class Videos(models.Model): # not used
     sha1 = models.CharField(max_length=50)
