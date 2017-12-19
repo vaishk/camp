@@ -13,11 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls import url, include
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import RedirectView
 
+from markdownx import urls as markdownx
+from photologue.views import GalleryListView
+
 from content import views
+
 
 
 urlpatterns = [
@@ -28,16 +34,26 @@ urlpatterns = [
     url(r'^.*event.php$', views.redirect_event, name='redirect_event'),
     url(r'^.*(/images/.*)$', views.redirect_images, name='redirect_images'),
     url(r'directions.html', RedirectView.as_view(url='/directions/')),
+    url(r'campstudio.html', RedirectView.as_view(url='/directions/')),
 
-    url(r'^projects/', views.projects, name='projects'),
-    url(r'^events/', views.events, name='events'),
-    url(r'^works/', views.works, name='works'),
-    url(r'^texts/', views.texts, name='texts'),
+    url(r'^texts/(?P<shortname>.+)/$', views.texts, name='texts'),
+    url(r'^events/(?P<shortname>.+)/$', views.events, name='events'),
+    url(r'^projects/(?P<shortname>.+)/$', views.projects, name='projects'),
+    url(r'^works/(?P<shortname>.+)/$', views.works, name='works'),
+    url(r'^works/$', views.works),
+    url(r'^projects/$', views.projects),
+    url(r'^events/$', views.events),
+    url(r'^texts/$', views.texts),
+    url(r'^search/$', views.search),
+    url(r'^markdownx/', include(markdownx)),
+    url(r'^photologue/', include('photologue.urls', namespace='photologue')),
+    url(r'^gallerylist/$', GalleryListView.as_view(), name='gallery-list'),
+]
 
-    url(r'^about/', views.about, name='about'),
-    url(r'^contact/', views.contact, name='contact'),
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-
-    url(r'^(?P<shortname>.+)/$', views.content, name='content'),
+urlpatterns += [
+    url(r'^(?P<shortname>\w+)/$', views.page, name='page')
 ]
 

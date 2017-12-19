@@ -1,0 +1,46 @@
+{% extends "photologue:photologue/photo_detail.html" %}
+{% load photologue_tags i18n %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+{% for gallery in object.public_galleries %}
+
+    <div class="row">
+        <div class="medium-9 columns">
+		  <h5 class="page-header">From gallery {{ gallery.title }}</h5>
+              <ul class="slider1">
+                    {% for photo.pk in gallery.public %}
+                        <li>  
+                            <img src="{{ photo.get_display_url }}" alt="{{ photo.title }}">
+                            <br /> <p>{{ photo.caption|safe }} <a href="{{ photo.image.url }}"> Link to original file </a> </p>
+                        </li>
+                        {% for photo in gallery.public %}
+                        <li>  
+                            <img src="{{ photo.get_display_url }}" alt="{{ photo.title }}">
+                            <br /> <p>{{ photo.caption|safe }} <a href="{{ photo.image.url }}" target="_blank" > Link to original file </a> </p>
+                        </li>
+                        {% endfor %}
+                    {% endfor %}
+                 </ul>            
+        </div>
+        <div class="medium-3 columns">
+            {% if object.public_galleries %}
+                <p>{% trans "Other photos in the gallery" %}:</p>
+                <table>
+                        {% for photo in gallery.public %}
+                        <tr>
+                        <td><a href="{{ photo.get_absolute_url }}">
+                        <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}"></a></td>
+                        <td>
+                        <p>{{ photo.caption|safe }} {{ photo.count }} </p>
+                        </td>
+                        </tr>
+	                    {% endfor %}
+				</table>
+			{% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,22 +1,45 @@
+
+
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="large-4 medium-4 columns">
-        <h4 class="sidebar-h4">{{ title }}</h4>
-		<div class="row">
-		    {% for content in content %}
-		    <div class="row right-items">
-			    <div class="small-6 columns">
-			        <img src="{{ content.image_url }}">
-			    </div>
-			    <div class="small-6 columns">
-			        <a href="{{ content.get_absolute_url }}" class="sidebar-title">{{ content.title }}</a>
-			         <h6 class="sidebar-date">{{ content.datestart }}</h6>
-                     {{content.header|striptags|truncatechars:150|safe}} <a href="{{ content.get_absolute_url }}">read more</a>
-			    </div>
-			</div>
-		    {% endfor %}
-			</div>
-			</div>
 
- {% endblock %}
+<div class="large-8 medium-8 columns special-column">
+    {% if projects.image %}
+	<img src="{{ projects.image_url }}">
+    {% endif %}
+	<div class="index-text">
+	<h4><a href="{{ projects.get_absolute_url }}/" class="big-title">{{projects.title}} </a></h4>
+	<p> {{projects.formatted_header|safe}} </p>
+	<p> {{projects.formatted_body|safe}} </p>
+    {% include "opt.html" with content=projects %}
+    {% include "links.html" with content=projects %}
+    {% include "gallery.html" with gallery=gallery %}
+</div>
+</div>
+
+{% if latest_content_list %}
+
+	<div class="large-4 medium-4 columns">
+    {% include "related.html" with related=projects.children.all %}
+    <h4 class="sidebar-h4">Projects </h4>
+    <div class="row">
+    
+        {% for projects in latest_content_list %}
+        <div class="row right-items">
+            <div class="small-6 columns">
+               <a href="{{ projects.get_absolute_url }}"> <img src="{{ projects.image_url }}"> </a>
+            </div>
+            <div class="small-6 columns">
+                <a href="{{ projects.get_absolute_url }}" class="sidebar-title">{{ projects.title }}</a>
+                <p> {{projects.formatted_teaser}} </p>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+            <p>No projects.</p>
+        {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

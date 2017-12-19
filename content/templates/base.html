@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}"> 
     <link rel="stylesheet" type="text/css" href="{% static "css/app.css" %}"> 
     <link rel="stylesheet" type="text/css" href="{% static "css/foundation.css" %}"> 
+    <link rel="stylesheet" type="text/css" href="{% static "css/jquery.bxslider.css" %}">
   </head>
   <body>
 
@@ -18,13 +19,13 @@
 
     <div class="off-canvas position-right" id="offCanvasRight" data-off-canvas data-position="right">
     <ul class="vertical-menu">
-        <li><a href="{% url 'index' %}">HOME</a></li>
-        <li><a href="{% url 'about' %}">ABOUT</a></li>
-        <li><a href="{% url 'projects' %}">PROJECTS</a></li>
-        <li><a href="{% url 'events' %}">EVENTS</a></li>
-        <li><a href="{% url 'works' %}">WORKS</a></li>
-        <li><a href="{% url 'texts' %}">TEXTS</a></li>
-        <li><a href="{% url 'contact' %}">CONTACT</a></li>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/about">ABOUT</a></li>
+        <li><a href="/projects">PROJECTS</a></li>
+        <li><a href="/events">EVENTS</a></li>
+        <li><a href="/works">WORKS</a></li>
+        <li><a href="/texts">TEXTS</a></li>
+        <li><a href="/contact">CONTACT</a></li>
       </ul>
     </div>
 
@@ -40,11 +41,34 @@
   {% endblock %}
 
 
-
   {% load static %}
     <script src="{% static "js/jquery.js" %}"></script>
     <script src="{% static "js/foundation.js" %}"></script>
     <script src="{% static "js/app.js" %}"></script>
     <script src="{% static "js/what-input.js" %}"></script>
+    <script src="{% static "js/jquery.bxslider.js" %}"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var slider = $('.slider1').bxSlider({
+          adaptiveHeight : true,
+          pager : false,
+        });
+
+
+      $(document).keydown(function(e){
+        if (e.keyCode == 39) // Right arrow 
+            {
+            slider.goToNextSlide();
+                return false;
+            }
+       else if (e.keyCode == 37) // left arrow
+            {
+                 slider.goToPrevSlide();
+                return false;
+           }
+        });
+      });
+    </script>
+
   </body>
 </html>

@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="row right-items">
+        <div class="small-6 columns">
+            {% if content.image_url %}
+            <img src="{{ content.image_url }}">
+            {% endif %}
+        </div>
+        <div class="small-6 columns">
+            <a href="{{ content.get_absolute_url }}" class="sidebar-title"> {{content.title}} </a>
+            {% if content.type.name == 'events' %}
+            <h6 class="sidebar-date">
+                <font color="#ef4e5c">
+                    <b> {{ content.datestart }} {% if content.dateend %} - {{content.dateend}} {% endif %} </b>
+                </font>
+                {% if content.place %}<br/>{{content.place}}{% endif%}
+            </h6>
+            {% endif %}
+            <p> {{ content.formatted_teaser }} </p>
+            </div>
+    </div>
+</div>

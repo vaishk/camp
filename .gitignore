@@ -1,2 +1,10 @@
+static
+data
 *.pyc
+__pycache__
+venv
 local_settings.py
+camp.json
+*.swp
+*.swo
+secret.txt

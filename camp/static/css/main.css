@@ -1,0 +1,144 @@
+body {
+	background-color: #000000 !important;
+	font-size: 14px !important;
+	color: #ffffff !important;
+	overflow-x: hidden;
+}
+
+.content_detail {
+	width: 70%;
+	padding-left: 5%;
+}
+
+.right-items {
+	padding-bottom: 0.5em;
+	padding-top: 0.5em;
+}
+
+body, h1, h2, h3, h4, h5, h6 {
+	font-family: Open Sans !important;
+}
+
+
+.sidebar-h4 {
+	font-weight: 600;
+	text-transform: uppercase;
+	font-size: 14px;
+	color: #ffffff;
+}
+
+.sidebar-title {
+	text-transform: capitalize;
+	font-weight: 800;
+	font-style: italic;
+	font-size: 14px;
+	color: #1779ba;
+}
+
+.sidebar-title :hover {
+	color: #ffffff;
+}
+
+a:focus, a:hover {
+	color: #ffffff !important;
+}
+
+.sidebar-date {
+	text-transform: uppercase;
+	font-size: 10px;
+}
+
+.news {
+	padding-left: 10px;
+}
+
+.special-column {
+	padding-left: 0em !important;
+}
+
+.index-text {
+	padding-left: 3%;
+	padding-right: 1%;
+	padding-top: 10px;
+}
+
+.index-text p {
+	text-align: justify;
+}
+
+.title-bar-right {
+	margin-right: 2em;
+	margin-top: 1em;
+}
+
+.menu-icon::after{
+	background: #ffffff none repeat scroll 0 0 !important;
+	box-shadow: 0 7px 0 #ffffff, 0 14px 0 #ffffff !important;
+}
+
+.big-title {
+	color: #ffffff;
+	font-weight: 600;
+	font-size: 1em;
+}
+
+.big-date {
+	font-size: 1em;
+	text-transform: uppercase;
+}
+
+.vertical-menu li {
+	list-style: none;
+	padding-top: 2em;
+	padding-left: 1em;
+	font-weight: 600;
+	font-size: 1em;
+	color: #ef4e5c;
+	background-color: #dddddd;
+}
+
+.off-canvas {
+	background-color: #dddddd !important;
+}
+
+.position-right.is-transition-push::after {
+	box-shadow: none !important;
+}
+
+ul.clearing-thumbs li {
+	list-style: none;
+	display: inline;
+	padding-right: 3px;
+}
+
+
+.page-header {
+	margin-top: 30px;
+	padding-bottom: 20px;
+}
+
+.thumbnail {
+	border: none;
+}
+
+.results {
+	padding: 20px;
+}
+
+.results-title {
+	padding-top: 20px;
+	padding-left: 20px;
+}
+
+.pagination {
+	padding-bottom: 20px;
+}
+
+.pagination a, .pagination button {
+	color: #ffffff !important;
+}
+
+.pagination a:hover,
+    .pagination button:hover {
+      background: #1779ba !important; }
+

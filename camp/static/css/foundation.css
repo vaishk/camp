@@ -14,6 +14,8 @@
      * 3. Prevent adjustments of font size after orientation changes in
      *    IE on Windows Phone and in iOS.
      */
+
+
 html {
   font-family: sans-serif;
   /* 1 */
@@ -3528,16 +3530,14 @@ table {
     text-align: left; }
   table tbody th,
   table tbody td {
-    padding: 0.5rem 0.625rem 0.625rem; }
+    padding: 0.25rem 0.25rem 0.25rem; }
   table tbody tr:nth-child(even) {
     border-bottom: 0;
-    background-color: #f1f1f1; }
-  table.unstriped tbody {
-    background-color: #fefefe; }
+  }
     table.unstriped tbody tr {
       border-bottom: 0;
-      border-bottom: 1px solid #f1f1f1;
-      background-color: #fefefe; }
+      border-bottom: 1px;
+ }
 
 @media screen and (max-width: 63.9375em) {
   table.stack thead {
@@ -3636,10 +3636,7 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
 .thumbnail {
   display: inline-block;
   max-width: 100%;
-  margin-bottom: 1rem;
-  border: solid 4px #fefefe;
-  border-radius: 0;
-  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.2);
+  margin-bottom: 0.2rem;
   line-height: 0; }
 
 a.thumbnail {

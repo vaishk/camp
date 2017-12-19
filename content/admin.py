@@ -1,10 +1,29 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django import forms
 from django.contrib import admin
-
+from markdownx.admin import MarkdownxModelAdmin
+from markdownx.widgets import AdminMarkdownxWidget
 # Register your models here.
-from . import models
+from models import *
+
+from photologue.admin import GalleryAdmin as GalleryAdminDefault
+from photologue.models import Gallery
+
+
+class ContentParentsInline(admin.TabularInline):
+    model = ContentContent
+    fk_name = 'contentid2'
+    raw_id_fields = ['contentid1']
+
+class ImagesInline(admin.StackedInline):
+    model = Image
+
+class FileInline(admin.StackedInline):
+    model = File
+
+class LinkInline(admin.StackedInline):
+    model = Link
 
 '''
 class SubdomainInline(admin.StackedInline):
@@ -17,31 +36,34 @@ class ServerAdmin(admin.ModelAdmin):
     pass
 '''
 
-class ResourcesAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'type', 'mime')
-    search_fields = ['href']
-    list_filter = ['type', 'mime']
+class GalleryAdminForm(forms.ModelForm):
+    """Users never need to enter a description on a gallery."""
 
-admin.site.register(models.Resources, ResourcesAdmin)
+    class Meta:
+        model = Gallery
+        exclude = ['description']
 
 
-class ResourcesInline(admin.StackedInline):
-    model = models.ContentResource
-    extra = 2 # how many rows to show
-
+class GalleryAdmin(GalleryAdminDefault):
+    form = GalleryAdminForm
 
 class ContentAdmin(admin.ModelAdmin):
     save_on_top = True
-    list_display = ('__unicode__', 'datestart', 'type')
-    list_filter = ['datestart', 'type', 'view', 'published']
-    search_fields = ['title', 'body', 'header']
-    raw_id_fields = ['parent']
+    list_display = ('__unicode__', 'datestart', 'shortname', 'type')
+    list_filter = ['datestart', 'type']
+    search_fields = ['title', 'body', 'header', 'shortname']
+    inlines = [ContentParentsInline, ImagesInline, FileInline, LinkInline]
+    formfield_overrides = {
+        models.TextField: {'widget': AdminMarkdownxWidget},
+    }
 
-    inlines = (ResourcesInline,)
 
 #    inlines = [SubdomainInline, DomainAliasInline]
 #    list_display = ('url', 'server', 'manage_nameserver', 'domain_registrar', 'email', 'is_active')
 #    list_editable = ('server', 'manage_nameserver', 'domain_registrar', 'email', 'is_active')
 
 
-admin.site.register(models.Content, ContentAdmin)
+admin.site.register(Content, ContentAdmin)
+admin.site.unregister(Gallery)
+admin.site.register(Gallery, GalleryAdmin)
+

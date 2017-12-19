@@ -2,17 +2,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-	{% for content in homepage %}
-	<div class="large-8 medium-8 columns special-column">
-	<div class="index-text">
-	<h4 class="big-title">{{content.title}} </a></h4>
-	<p> {{content.formatted_header}} </p>
-	<p> {{content.formatted_body}} </p>
-	</div>
-	{% endfor %}
-
-	</div>
+    {% include "featured.html" %}
 	<div class="large-4 medium-4 columns">
         {% if upcoming_events.exists %}
 		<h4 class="sidebar-h4"> Upcoming Events </h4>
@@ -27,5 +17,5 @@
         {% include "event_preview.html" with events=past_events %}
         {% endif %}
     </div>
-			
+</div>
 {% endblock %}

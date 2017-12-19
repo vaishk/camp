@@ -1,0 +1,18 @@
+{% if content.optbtn2 and content.opttext2 %}
+<div class="part2">
+    <h4>{{ content.optbtn2|safe }} </h4>
+    <p>{{ content.opttext2|safe|linebreaks }}</p>
+</div>
+{% endif %}
+{% if content.optbtn3 and content.opttext3 %}
+<div class="part3">
+    <h4>{{ content.optbtn3|safe }} </h4>
+    <p>{{ content.opttext3|safe|linebreaks }}</p>
+</div>
+{% endif %}
+{% if content.schedule %}
+<div class="schedule">
+    <h4>{{content.schedulebutton|default:"Schedule"}}</h4>
+    <p>{{ content.schedule|safe|linebreaks }}</p>
+</div>
+{% endif %}

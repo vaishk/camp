@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include "featured.html" %}
+
+    <div class="large-4 medium-4 columns">
+        <h4 class="sidebar-h4"> {{ section }} </h4>
+		<div class="row">
+		    {% for content in content %}
+		    <div class="row right-items">
+                {% if content.image_url %}
+			    <div class="small-6 columns">
+			        <img src="{{ content.image_url }}">
+			    </div>
+                {% endif %}
+			    <div class="small-6 columns">
+			        <a href="{{ content.get_absolute_url }}/" class="sidebar-title">{{ content.title }}</a>
+                    <p> {{content.formatted_teaser}} </p>
+			    </div>
+			</div>
+		    {% endfor %}
+        </div>
+    </div>
+
+ {% endblock %}

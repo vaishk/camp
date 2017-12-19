@@ -1,0 +1,38 @@
+<div class="row">
+    {% for content in events %}    
+    {% if content.type.name == 'news' %}
+    <div class="row right-items">
+        <div class= "small-12 columns">
+            <h6 class="sidebar-date">
+                <font color="#ef4e5c"> <b> {{content.datestart}} </b> 
+                {{ content.title }} <br />
+                {{ content.formatted_header }}
+                </font>
+            </h6>
+        </div>
+    </div>
+    {% elif content.type.name == 'events' %}
+    <div class="row right-items">
+        {% if content.image_url %}
+        <div class="small-6 columns">
+            <a href="{{ content.get_absolute_url }}">
+                <img src="{{ content.image_url }}">
+            </a>
+        </div>
+        {% endif %}
+        <div class="small-6 columns">
+            <a href="{{ content.get_absolute_url }}" class="sidebar-title">{{ content.title }}</a>
+             <h6 class="sidebar-date">
+                 <font color="#ef4e5c">
+                    <b>{{ content.datestart }} {% if content.dateend %} - {{content.dateend}} {% endif %}</b>
+                 </font>
+                 {%if content.place %}<br>{{content.place}}{% endif %}
+             </h6>
+              <p> {{content.formatted_teaser}} </p>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <br>
+    <br>
+</div>
