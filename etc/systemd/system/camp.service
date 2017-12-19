@@ -1,0 +1,14 @@
+[Unit]
+Description=studio.camp
+After=postgresql.service
+
+[Service]
+Type=simple
+Restart=always
+User=campdjango
+Group=campdjango
+WorkingDirectory=/srv/camp
+ExeccStart=/srv/camp/venv/bin/gunicorn -b 127.0.0.1:8087 camp.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

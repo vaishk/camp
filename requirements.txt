@@ -4,3 +4,4 @@ django-photologue
 django-braces
 django-app-namespace-template-loader
 ox
+gunicorn
