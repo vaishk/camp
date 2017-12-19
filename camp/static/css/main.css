@@ -142,3 +142,13 @@ ul.clearing-thumbs li {
     .pagination button:hover {
       background: #1779ba !important; }
 
+.admin-menu {
+    position: absolute;
+    top: 15px;
+    right: 65px;
+}
+
+.admin-menu a {
+    color: #fff;
+}
+

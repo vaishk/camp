@@ -125,7 +125,7 @@ def page(request, shortname):
 
 def search(request):
     q = request.GET.get('q')
-    results = Content.objects.filter(Q(body__icontains=q) | Q(title__icontains=q)).distinct()
+    results = Content.objects.filter(Q(body__icontains=q) | Q(title__icontains=q) | Q(header__icontains=q)).distinct()
     results = results.filter(published=True)
     results = results.order_by('-datestart')
     page = request.GET.get('page', 1)

@@ -1,0 +1,6 @@
+{% if request.user.is_staff %}
+<div class="admin-menu">
+    <a href="{% url 'admin:content_content_change' content.id %}">Edit</a>
+</div>
+{% endif %}
+
