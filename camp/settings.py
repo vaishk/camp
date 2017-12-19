@@ -38,11 +38,12 @@ INSTALLED_APPS = [
     'braces',
     'django_extensions',
     'markdownx',
-    'photologue',
     'sortedm2m',
 
     'camp',
     'content',
+
+    'photologue',
 ]
 
 SITE_ID = 1
