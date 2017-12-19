@@ -47,7 +47,7 @@
         <div class="small-4 small-offset-4 columns">
           <ul class="pagination">
             {% if results.has_previous %}
-              <li><a href="?page={{ results.previous_page_number }}">&laquo;</a></li>
+              <li><a href="?q={{ query }}&page={{ results.previous_page_number }}">&laquo;</a></li>
             {% else %}
               <li class="disabled"><span>&laquo;</span></li>
             {% endif %}
@@ -55,11 +55,11 @@
               {% if results.number == i %}
                 <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
               {% else %}
-                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              <li><a href="?q={{ query }}&page={{ i }}">{{ i }}</a></li>
               {% endif %}
             {% endfor %}
             {% if results.has_next %}
-              <li><a href="?page={{ results.next_page_number }}">&raquo;</a></li>
+              <li><a href="?q={{ query }}&page={{ results.next_page_number }}">&raquo;</a></li>
             {% else %}
               <li class="disabled"><span>&raquo;</span></li>
             {% endif %}

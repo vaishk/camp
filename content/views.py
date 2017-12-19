@@ -108,7 +108,7 @@ def texts(request, shortname=None):
     return render(request, 'texts.html', {
         'texts': texts,
         'latest_content_list': latest_content_list,
-        'gallery':gallery
+        'gallery': gallery
     })
 
 
@@ -131,7 +131,10 @@ def search(request):
     except EmptyPage:
         results = paginator.page(paginator.num_pages)
 
-    return render(request, 'results.html', {'results': results})
+    return render(request, 'results.html', {
+        'results': results,
+        'query': q
+    })
 
 
 class GalleryListViews(ListView):
