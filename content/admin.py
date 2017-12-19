@@ -15,14 +15,18 @@ class ContentParentsInline(admin.TabularInline):
     model = ContentContent
     fk_name = 'contentid2'
     raw_id_fields = ['contentid1']
+    extra = 0
 
 class ImagesInline(admin.StackedInline):
+    extra = 0
     model = Image
 
 class FileInline(admin.StackedInline):
+    extra = 0
     model = File
 
 class LinkInline(admin.StackedInline):
+    extra = 0
     model = Link
 
 '''
@@ -52,15 +56,10 @@ class ContentAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'datestart', 'shortname', 'type')
     list_filter = ['datestart', 'type']
     search_fields = ['title', 'body', 'header', 'shortname']
-    inlines = [ContentParentsInline, ImagesInline, FileInline, LinkInline]
+    inlines = [ContentParentsInline, FileInline, LinkInline]
     formfield_overrides = {
         models.TextField: {'widget': AdminMarkdownxWidget},
     }
-
-
-#    inlines = [SubdomainInline, DomainAliasInline]
-#    list_display = ('url', 'server', 'manage_nameserver', 'domain_registrar', 'email', 'is_active')
-#    list_editable = ('server', 'manage_nameserver', 'domain_registrar', 'email', 'is_active')
 
 
 admin.site.register(Content, ContentAdmin)

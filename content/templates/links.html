@@ -1,10 +1,22 @@
-{% if content.links.exists %}
+{% if content.link_set.exists %}
 <div class="links">
     <b>Links:</b>
     <ul>
-    {% for res in content.links %}
+    {% for link in content.link_set.all %}
     <li>
-        <a href="{{res.get_absolute_url}}">{{res.description|default:res.href}}</a>
+        <a href="{{link.url}}">{{link.description|default:link.url}}</a>
+    </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% if content.file_set.exists %}
+<div class="files">
+    <b>Resources:</b>
+    <ul>
+    {% for file in content.file_set.all %}
+    <li>
+        <a href="{{file.get_absolute_url}}">{{file.name}}</a>
     </li>
     {% endfor %}
     </ul>

@@ -62,7 +62,7 @@ class Comments(models.Model): #not used
 
 class Content(models.Model):
     type = models.ForeignKey("ContentTypes", db_column="type")
-    shortname = models.CharField(db_column='shortName', max_length=255)  # Field name made lowercase.
+    shortname = models.CharField('Slug', db_column='shortName', max_length=255, unique=True)
     title = models.CharField(max_length=255)
     header = MarkdownxField(blank=True, null=True, default='')
     body = MarkdownxField(blank=True, null=True, default='')
@@ -87,6 +87,7 @@ class Content(models.Model):
     parents = models.ManyToManyField('Content', through='ContentContent', related_name="children")
 
     resources = models.ManyToManyField('Resources', through='ContentResource', related_name="content")
+    gallery = models.ForeignKey(Gallery, null=True, blank=True, related_name="content")
 
     # delete after migration
     parentid = models.IntegerField(null=True, db_column='parentID', blank=True, editable=False)
@@ -123,9 +124,6 @@ class Content(models.Model):
         if self.image:
             return settings.IMAGE_PREFIX + self.image
 
-    def links(self):
-        return self.resources.filter(type=3).order_by('orderno')
-
     def images(self):
         return self.resources.filter(type=2).exclude(href=self.image).order_by('orderno')
 
@@ -142,16 +140,19 @@ class Content(models.Model):
             return '/' + '/'.join(parts)
 
     def get_gallery(self):
-        gallery, created = Gallery.objects.get_or_create(slug=self.shortname)
-        if created:
-            title = self.title
-            n = 1
-            while Gallery.objects.filter(title=title).exclude(pk=gallery.pk).exists():
-                n += 1
-                title = '%s [%s]' % (self.title, n)
-            gallery.title = title
-            gallery.save()
-        return gallery
+        if not self.gallery:
+            gallery, created = Gallery.objects.get_or_create(slug=self.shortname)
+            if created:
+                title = self.title
+                n = 1
+                while Gallery.objects.filter(title=title).exclude(pk=gallery.pk).exists():
+                    n += 1
+                    title = '%s [%s]' % (self.title, n)
+                gallery.title = title
+                gallery.save()
+            self.gallery = gallery
+            self.save()
+        return self.gallery
 
     class Meta:
         managed = True
@@ -307,10 +308,20 @@ class Resources(models.Model):
 
 class File(models.Model):
     content = models.ForeignKey('Content')
-    fil = models.FileField(upload_to='files')
+    file = models.FileField(upload_to='files')
     description = models.TextField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     order = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['order', 'file']
+
+    def get_absolute_url(self):
+        return '/' + self.file.name
+
+    @property
+    def name(self):
+        return self.description or self.file.name
 
 class Image(models.Model):
     content = models.ForeignKey('Content', related_name='images')
@@ -325,6 +336,9 @@ class Link(models.Model):
     description = models.TextField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     order = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['order', 'url']
 
     def __unicode__(self):
         return self.url
