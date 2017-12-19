@@ -83,8 +83,14 @@ class Content(models.Model):
     featured = models.BooleanField(default=False)
     view = models.ForeignKey("Views", null=True, blank=True, db_column="view", editable=False)
     place = models.CharField(max_length=255, null=True, blank=True)
-    parentid = models.IntegerField(null=True, db_column='parentID', blank=True, editable=False) # delete
-    parents = models.ManyToManyField('Content', through='ContentContent', related_name= "children")
+    parents = models.ManyToManyField('Content', through='ContentContent', related_name="children")
+
+    resources = models.ManyToManyField('Resources', through='ContentResource', related_name="content")
+
+    # delete after migration
+    parentid = models.IntegerField(null=True, db_column='parentID', blank=True, editable=False)
+
+    # end of delte
 
     def __unicode__(self):
         return self.title
@@ -115,6 +121,12 @@ class Content(models.Model):
     def image_url(self):
         if self.image:
             return settings.IMAGE_PREFIX + self.image
+
+    def links(self):
+        return self.resources.filter(type=3).order_by('orderno')
+
+    def images(self):
+        return self.resources.filter(type=2).exclude(href=self.image).order_by('orderno')
 
     def get_absolute_url(self):
         if self.shortname:
@@ -162,8 +174,11 @@ class ContentKeyword(models.Model):
 
 
 class ContentResource(models.Model):
-    contentid = models.IntegerField(db_column='contentID')  # Field name made lowercase.
-    resourceid = models.IntegerField(db_column='resourceID')  # Field name made lowercase.
+    contentid = models.ForeignKey('Content', db_column='contentID')
+    resourceid = models.ForeignKey('Resources', db_column='resourceID')
+
+    def __unicode__(self):
+        return self.resource.href
 
     class Meta:
         # managed = False
@@ -176,7 +191,7 @@ class ContentTypes(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
-        return self.name             
+        return self.name
 
     class Meta:
         # managed = False
@@ -202,14 +217,20 @@ class People(models.Model): #not used
     bio = models.TextField(blank=True, null=True)
     type = models.IntegerField()
 
+    resources = models.ManyToManyField('Resources', through='PersonResource', related_name='people')
+    content = models.ManyToManyField('Content', through='PersonContent', related_name='people')
+
+    def __unicode__(self):
+        return self.name
+
     class Meta:
         # managed = False
         db_table = 'people'
 
 
 class PersonContent(models.Model):
-    personid = models.IntegerField(db_column='personID')  # Field name made lowercase.
-    contentid = models.IntegerField(db_column='contentID')  # Field name made lowercase.
+    personid = models.ForeignKey("people", db_column="personID")
+    contentid = models.ForeignKey("content", db_column="contentID")
     level = models.IntegerField()
 
     class Meta:
@@ -218,8 +239,8 @@ class PersonContent(models.Model):
 
 
 class PersonResource(models.Model):
-    personid = models.IntegerField(db_column='personID')  # Field name made lowercase.
-    resourceid = models.IntegerField(db_column='resourceID')  # Field name made lowercase.
+    personid = models.ForeignKey("people", db_column="personID")
+    resourceid = models.ForeignKey("resources", db_column="resourceID")
 
     class Meta:
         # managed = False
@@ -243,6 +264,29 @@ class Resources(models.Model):
     istech = models.IntegerField(db_column='isTech')  # Field name made lowercase.
     dateadded = models.DateTimeField(db_column='dateAdded', null=True, blank=True)  # Field name made lowercase.
     orderno = models.IntegerField(db_column='orderNo', blank=True, null=True)  # Field name made lowercase.
+
+    def get_absolute_url(self):
+        href = self.href
+        if not href.startswith('http') and not href.startswith('/'):
+            href = '/' + href
+        if href.startswith('/'):
+            href = 'https://studio.camp' + href
+        return href
+
+    @property
+    def is_image(self):
+        if self.mime:
+            return self.mime.lower() in ('gif', 'jpeg', 'jpg', 'png')
+
+    @property
+    def is_audio(self):
+        if self.mime:
+            return self.mime.lower() in ('mp3', 'ogg')
+
+    @property
+    def is_video(self):
+        if self.mime:
+            return self.mime.lower() in ('ogv', 'mp4')
 
     class Meta:
         # managed = False
