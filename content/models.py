@@ -6,6 +6,7 @@ from django.core.validators import MaxLengthValidator
 from django.db import models
 from django.utils.html import mark_safe
 
+from photologue.models import Photo, Gallery
 from markdownx.models import MarkdownxField
 from markdownx.utils import markdownify
 import ox
@@ -139,6 +140,10 @@ class Content(models.Model):
             else:
                 parts = [section, self.shortname]
             return '/' + '/'.join(parts)
+
+    def get_gallery(self):
+        gallery, created = Gallery.objects.get_or_create(slug=self.shortname)
+        return gallery
 
     class Meta:
         managed = True
