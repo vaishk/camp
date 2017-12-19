@@ -48,7 +48,12 @@ urlpatterns = [
     url(r'^markdownx/', include(markdownx)),
     url(r'^photologue/', include('photologue.urls', namespace='photologue')),
     url(r'^gallerylist/$', GalleryListView.as_view(), name='gallery-list'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += [
     url(r'^(?P<shortname>\w+)/$', views.page, name='page')
 ]
 

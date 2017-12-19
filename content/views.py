@@ -87,7 +87,11 @@ def projects(request, shortname=None):
         raise Http404
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='projects').order_by('-datestart')
-    return render(request, 'projects.html', {'projects': projects, 'latest_content_list': latest_content_list, 'gallery':gallery})
+    return render(request, 'projects.html', {
+        'projects': projects,
+        'latest_content_list': latest_content_list,
+        'gallery': gallery
+    })
 
 def works(request, shortname=None):
     if not shortname:

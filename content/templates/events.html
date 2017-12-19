@@ -13,14 +13,7 @@
 	<p> {{events.formatted_header|safe}} </p>
 	<p> {{events.formatted_body|safe}} </p>
     {% include "opt.html" with content=events %}
-	{% if gallery %}
-	<h6><strong>Gallery: {{gallery.title}}</strong></h6>
-	<ul class="clearing-thumbs" data-clearing>
-	{% for photo in gallery.public %}
-	  <li><a href="{{ photo.get_absolute_url }}"><img src="{{ photo.get_thumbnail_url }}"></a></li>
-	{% endfor %}
-	{% endif %}
-	</ul>
+    {% include "gallery.html" with gallery=gallery %}
 </div>
 </div>
 

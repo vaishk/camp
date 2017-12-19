@@ -143,6 +143,14 @@ class Content(models.Model):
 
     def get_gallery(self):
         gallery, created = Gallery.objects.get_or_create(slug=self.shortname)
+        if created:
+            title = self.title
+            n = 1
+            while Gallery.objects.filter(title=title).exclude(pk=gallery.pk).exists():
+                n += 1
+                title = '%s [%s]' % (self.title, n)
+            gallery.title = title
+            gallery.save()
         return gallery
 
     class Meta:
