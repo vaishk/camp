@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.validators import MaxLengthValidator
 from django.db import models
 from django.utils.html import mark_safe
+from django.utils.encoding import python_2_unicode_compatible
 
 from photologue.models import Photo, Gallery
 from markdownx.models import MarkdownxField
@@ -60,6 +61,7 @@ class Comments(models.Model): #not used
         db_table = 'comments'
 
 
+@python_2_unicode_compatible
 class Content(models.Model):
     type = models.ForeignKey("ContentTypes", db_column="type")
     shortname = models.CharField('Slug', db_column='shortName', max_length=255, unique=True)
@@ -94,7 +96,7 @@ class Content(models.Model):
 
     # end of delte
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     @property
@@ -159,11 +161,12 @@ class Content(models.Model):
         db_table = 'content'
 
 
+@python_2_unicode_compatible
 class ContentContent(models.Model):
     contentid1 = models.ForeignKey("content", db_column='contentID1', related_name="child")  # Field name made lowercase.
     contentid2 = models.ForeignKey("content", db_column='contentID2', related_name="parent")  # Field name made lowercase.
 
-    def __unicode__(self):
+    def __str__(self):
         return self.contentid1.title
 
     class Meta:
@@ -187,11 +190,12 @@ class ContentKeyword(models.Model):
         db_table = 'content_keyword'
 
 
+@python_2_unicode_compatible
 class ContentResource(models.Model):
     contentid = models.ForeignKey('Content', db_column='contentID')
     resourceid = models.ForeignKey('Resources', db_column='resourceID')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.resource.href
 
     class Meta:
@@ -199,12 +203,13 @@ class ContentResource(models.Model):
         db_table = 'content_resource'
 
 
+@python_2_unicode_compatible
 class ContentTypes(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -221,6 +226,7 @@ class Keywords(models.Model):
         db_table = 'keywords'
 
 
+@python_2_unicode_compatible
 class People(models.Model): #not used
     name = models.CharField(max_length=255, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True)
@@ -234,7 +240,7 @@ class People(models.Model): #not used
     resources = models.ManyToManyField('Resources', through='PersonResource', related_name='people')
     content = models.ManyToManyField('Content', through='PersonContent', related_name='people')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -330,6 +336,7 @@ class Image(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     order = models.IntegerField(blank=True, null=True)
 
+@python_2_unicode_compatible
 class Link(models.Model):
     content = models.ForeignKey('Content')
     url = models.URLField(max_length=4096)
@@ -340,7 +347,7 @@ class Link(models.Model):
     class Meta:
         ordering = ['order', 'url']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.url
 
 class Videos(models.Model): # not used
@@ -360,11 +367,12 @@ class Videos(models.Model): # not used
         db_table = 'videos'
 
 
+@python_2_unicode_compatible
 class Views(models.Model):
     name = models.CharField(max_length=255)
     href = models.CharField(max_length=255, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
