@@ -4,12 +4,11 @@ from django import forms
 from django.contrib import admin
 from markdownx.admin import MarkdownxModelAdmin
 from markdownx.widgets import AdminMarkdownxWidget
-# Register your models here.
-from models import *
 
 from photologue.admin import GalleryAdmin as GalleryAdminDefault
 from photologue.models import Gallery
 
+from .models import *
 
 class ContentParentsInline(admin.TabularInline):
     model = ContentContent
@@ -53,7 +52,7 @@ class GalleryAdmin(GalleryAdminDefault):
 
 class ContentAdmin(admin.ModelAdmin):
     save_on_top = True
-    list_display = ('__unicode__', 'datestart', 'shortname', 'type')
+    list_display = ('__str__', 'datestart', 'shortname', 'type')
     list_filter = ['datestart', 'type']
     search_fields = ['title', 'body', 'header', 'shortname']
     inlines = [ContentParentsInline, FileInline, LinkInline]
