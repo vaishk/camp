@@ -125,7 +125,7 @@ def page(request, shortname):
 
 def search(request):
     q = request.GET.get('q')
-    results = Content.objects.filter(body__contains=q).order_by('-datestart')
+    results = Content.objects.filter(Q(body__contains=q) | Q(title__contains=q)).distinct().order_by('-datestart')
     page = request.GET.get('page', 1)
     paginator = Paginator(results, 5)
     try:
