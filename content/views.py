@@ -8,6 +8,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views.generic.list import ListView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from photologue.views import GalleryListView 
 from photologue.models import Photo, Gallery
@@ -121,6 +122,15 @@ def page(request, shortname):
 def search(request):
     q = request.GET.get('q')
     results = Content.objects.filter(body__contains=q).order_by('-datestart')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(results, 5)
+    try:
+        results = paginator.page(page)
+    except PageNotAnInteger:
+        results = paginator.page(1)
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
+
     return render(request, 'results.html', {'results': results})
 
 
