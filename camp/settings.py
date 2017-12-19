@@ -34,13 +34,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'content',
+
+    'braces',
+    'django_extensions',
     'markdownx',
     'photologue',
     'sortedm2m',
-    'braces',
 
-    'camp'
+    'camp',
+    'content',
 ]
 
 SITE_ID = 1

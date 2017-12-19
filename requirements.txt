@@ -5,3 +5,4 @@ django-braces
 django-app-namespace-template-loader
 ox
 gunicorn
+django_extensions
