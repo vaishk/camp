@@ -152,3 +152,6 @@ ul.clearing-thumbs li {
     color: #fff;
 }
 
+table thead, table tbody, table tfoot {
+    background-color: #000;
+}
