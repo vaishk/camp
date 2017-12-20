@@ -7,8 +7,8 @@
 {% for gallery in object.public_galleries %}
     <div class="row">
         <div class="medium-9 columns">
-        {% if gallery.content %}
-        <h6 class="page-header"><a href="{{ gallery.content.get_absolute_url }}">Back to{{ gallery.content.title }}</a></h6>
+        {% if gallery.content.exists %}
+        <h6 class="page-header"><a href="{{ gallery.content.all.0.get_absolute_url }}">Back to {{ gallery.content.all.0.title }}</a></h6>
         {% endif %}
 		  <h5>From gallery {{ gallery.title }}</h5>
               <ul class="slider1">
