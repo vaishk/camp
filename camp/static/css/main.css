@@ -114,7 +114,7 @@ ul.clearing-thumbs li {
 
 .page-header {
 	margin-top: 30px;
-	padding-bottom: 20px;
+	line-height: 0.4em !important;
 }
 
 .thumbnail {

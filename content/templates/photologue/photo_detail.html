@@ -7,7 +7,8 @@
 {% for gallery in object.public_galleries %}
     <div class="row">
         <div class="medium-9 columns">
-		  <h5 class="page-header">From gallery {{ gallery.title }}</h5>
+        <h6 class="page-header"><a href="/events/{{gallery.slug}}/">BACK</a></h6>
+		  <h5>From gallery {{ gallery.title }}</h5>
               <ul class="slider1">
                     {% for photo.pk in gallery.public %}
                         <li>  
