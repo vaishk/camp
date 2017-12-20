@@ -7,7 +7,9 @@
 {% for gallery in object.public_galleries %}
     <div class="row">
         <div class="medium-9 columns">
-        <h6 class="page-header"><a href="/events/{{gallery.slug}}/">BACK</a></h6>
+        {% if gallery.content %}
+        <h6 class="page-header"><a href="{{ gallery.content.get_absolute_url }}">Back to{{ gallery.content.title }}</a></h6>
+        {% endif %}
 		  <h5>From gallery {{ gallery.title }}</h5>
               <ul class="slider1">
                     {% for photo.pk in gallery.public %}
@@ -23,6 +25,7 @@
                         {% endfor %}
                     {% endfor %}
                  </ul>            
+        }
         </div>
         <div class="medium-3 columns">
             {% if object.public_galleries %}
