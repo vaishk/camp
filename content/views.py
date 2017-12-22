@@ -172,6 +172,7 @@ def limit_content(content, q):
 
 def search(request):
     content = Content.objects.filter(published=True).order_by('-datestart')
+    content = content.exclude(type__name__in=['page', 'homepage'])
     q = request.GET.get('q')
     content = limit_content(content, q)
     page = request.GET.get('page', 1)
