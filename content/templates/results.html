@@ -5,61 +5,66 @@
 <div class="row">
     <div class="row">
         <div class="small-4 small-offset-2 columns results-title">
+            {% if section %}
+            <h3> {{section }}</h3>
+            {% else %}
             <h3> Search results </h3>
+            {% endif %}
         </div>
     </div>
-    {% for content in results %}
-    {% if content.type.name == 'news' %}
+    {% for row in content %}
+    {% if row.type.name == 'news' %}
     <div class="row">
         <div class= "small-4 small-offset-2 columns">
-            <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{content.datestart}} </b> 
-            {{ content.title }} <br />
-            {{ content.formatted_header|striptags|safe }} </font> 
+            <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{row.datestart}} </b> 
+            {{ row.title }} <br />
+            {{ row.formatted_header|striptags|safe }} </font> 
             </h6>
         </div>
     </div>
-    {% elif content.type.name == 'events' %}
+    {% elif row.type.name == 'events' %}
     <div class="row results">
         <div class="small-4 small-offset-2 columns">
-            <img src="{{ content.image_url }}">
+            <img src="{{ row.image_url }}">
         </div>
         <div class="small-4 end columns">
-            <a href="{{ content.get_absolute_url }}" class="sidebar-title">{{ content.title }}</a>
-             <h6 class="sidebar-date"> <font color="#ef4e5c">  <b> {{ content.datestart }} {% if content.dateend %} - {{content.dateend}} {% endif %} </b></font> 
-             {% if content.place %}<br/> {{content.place}} {% endif%}</h6>
-              <p> {{content.header|striptags|safe}} </p>
-              <a href="{{ content.get_absolute_url }}">read more</a> </p>
+            <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
+             <h6 class="sidebar-date"> <font color="#ef4e5c">  <b> {{ row.datestart }} {% if row.dateend %} - {{row.dateend}} {% endif %} </b></font> 
+             {% if row.place %}<br/> {{row.place}} {% endif%}</h6>
+              <p> {{row.header|striptags|safe}} </p>
+              <a href="{{ row.get_absolute_url }}">read more</a> </p>
         </div>
     </div>
     {% else %}
+    {% if request.user.is_staff %}
     <div class="row">
         <div class="small-4 small-offset-2 columns">
-        Add view for content type: {{content.type}}
+        Add view for content type: {{row.type}}
         </div>
     </div>
-
+    {% endif %}
     {% endif %}
     {% endfor %}
     <br>
     <br>
-    {% if results.has_other_pages %}
+    {% if content.has_other_pages %}
     <div class="row">
         <div class="small-4 small-offset-4 columns">
           <ul class="pagination">
-            {% if results.has_previous %}
-              <li><a href="?q={{ query }}&page={{ results.previous_page_number }}">&laquo;</a></li>
+            {% if content.has_previous %}
+              <li><a href="?{{ base_query }}&page={{ content.previous_page_number }}">&laquo;</a></li>
             {% else %}
               <li class="disabled"><span>&laquo;</span></li>
             {% endif %}
-            {% for i in results.paginator.page_range %}
-              {% if results.number == i %}
+            {% for i in content.paginator.page_range %}
+              {% if content.number == i %}
                 <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
               {% else %}
-              <li><a href="?q={{ query }}&page={{ i }}">{{ i }}</a></li>
+              <li><a href="?{{ base_query }}page={{ i }}">{{ i }}</a></li>
               {% endif %}
             {% endfor %}
-            {% if results.has_next %}
-              <li><a href="?q={{ query }}&page={{ results.next_page_number }}">&raquo;</a></li>
+            {% if content.has_next %}
+                <li><a href="?{{ base_query }}page={{ content.next_page_number }}">&raquo;</a></li>
             {% else %}
               <li class="disabled"><span>&raquo;</span></li>
             {% endif %}

@@ -36,7 +36,8 @@
     </div>
   </div>
   <form method="get" action='/search/'>
-  <input type="search" name="q" class="search-form"> <input type="submit" style="visibility: hidden;" />
+    <input type="search" name="q" class="search-form" value="{{query|default:""}}">
+    <input type="submit" style="visibility: hidden;" />
   </form>
   {% block content %}
   {% endblock %}

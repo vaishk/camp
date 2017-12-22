@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -35,21 +36,62 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def section_index(request, types, section):
-    featured = Content.objects.filter(type__name__in=types, featured=True).order_by('-datestart')[:1]
+SECTION_TYPE = {
+    'Projects': ['projects'],
+    'Works': ['works'],
+    'Texts': ['texts'],
+    'Events': ['events', 'news'],
+}
+
+def section_content(section):
+    types = SECTION_TYPE.get(section, [section.lower()])
     content = Content.objects.filter(type__name__in=types).order_by('-datestart')
+    content = content.filter(published=True)
+    return content
+
+
+def section_index(request, section):
+    types = SECTION_TYPE.get(section, [section.lower()])
+    featured = Content.objects.filter(type__name__in=types, featured=True).order_by('-datestart')[:1]
+    content = section_content(section)
     if featured:
         content = content.exclude(pk=featured[0].pk)
-    content = content.filter(published=True)
     return render(request, 'section_index.html', {
         'section': section,
         'featured': featured,
         'content': content
     })
 
+
+def section_list(request, section):
+    content = section_content(section)
+
+    q = request.GET.get('q')
+    content = limit_content(content, q)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(content, 5)
+    try:
+        content = paginator.page(page)
+    except PageNotAnInteger:
+        content = paginator.page(1)
+    except EmptyPage:
+        content = paginator.page(paginator.num_pages)
+
+    base_query = ''
+    if q:
+        base_query = 'q=%s&' % q
+
+    return render(request, 'results.html', {
+        'base_query': base_query,
+        'section': section,
+        'content': content,
+        'query': q
+    })
+
 def event(request):
     now = datetime.now()
-    display_events = ['events']
+    display_events = ['events', 'news']
     featured = Content.objects.filter(type__name='events', featured=True).order_by('-datestart')[:1]
     base = Content.objects.filter(type__name__in=display_events).order_by('-datestart')
     base = base.filter(published=True)
@@ -58,7 +100,7 @@ def event(request):
 
     upcoming_events = base.filter(datestart__gt=now).order_by('-datestart')
     ongoing_events = base.filter(datestart__lt=now, dateend__gte=now).order_by('-datestart')
-    past_events = base.filter(Q(dateend__lt=now)|Q(dateend=None, datestart__lt=now))[:10]
+    past_events = base.filter(Q(dateend__lt=now) | Q(dateend=None, datestart__lt=now))[:10]
 
     context = {
         'upcoming_events': upcoming_events,
@@ -81,7 +123,7 @@ def events(request, shortname=None):
 
 def projects(request, shortname=None):
     if not shortname:
-        return section_index(request, ['projects'], 'Projects')
+        return section_index(request, 'Projects')
     projects = get_object_or_404(Content, shortname=shortname, type__name='projects')
     if not projects.published and not request.user.is_staff:
         raise Http404
@@ -95,7 +137,7 @@ def projects(request, shortname=None):
 
 def works(request, shortname=None):
     if not shortname:
-        return section_index(request, ['works'], 'Works')
+        return section_index(request, 'Works')
     works = get_object_or_404(Content, shortname=shortname, type__name='works')
     if not works.published and not request.user.is_staff:
         raise Http404
@@ -105,7 +147,7 @@ def works(request, shortname=None):
 
 def texts(request, shortname=None):
     if not shortname:
-        return section_index(request, ['texts'], 'Texts')
+        return section_index(request, 'Texts')
     texts = get_object_or_404(Content, shortname=shortname, type__name='texts')
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='texts')
@@ -123,22 +165,31 @@ def page(request, shortname):
     return render(request, 'page.html', {'content': content})
 
 
+def limit_content(content, q):
+    if q:
+        content = content.filter(Q(body__icontains=q) | Q(title__icontains=q) | Q(header__icontains=q)).distinct()
+    return content
+
 def search(request):
+    content = Content.objects.filter(published=True).order_by('-datestart')
     q = request.GET.get('q')
-    results = Content.objects.filter(Q(body__icontains=q) | Q(title__icontains=q) | Q(header__icontains=q)).distinct()
-    results = results.filter(published=True)
-    results = results.order_by('-datestart')
+    content = limit_content(content, q)
     page = request.GET.get('page', 1)
-    paginator = Paginator(results, 5)
+    paginator = Paginator(content, 5)
     try:
-        results = paginator.page(page)
+        content = paginator.page(page)
     except PageNotAnInteger:
-        results = paginator.page(1)
+        content = paginator.page(1)
     except EmptyPage:
-        results = paginator.page(paginator.num_pages)
+        content = paginator.page(paginator.num_pages)
+
+    base_query = ''
+    if q:
+        base_query = 'q=%s&' % q
 
     return render(request, 'results.html', {
-        'results': results,
+        'base_query': base_query,
+        'content': content,
         'query': q
     })
 
