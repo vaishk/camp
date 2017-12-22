@@ -31,7 +31,18 @@
             <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
              <h6 class="sidebar-date"> <font color="#ef4e5c">  <b> {{ row.datestart }} {% if row.dateend %} - {{row.dateend}} {% endif %} </b></font> 
              {% if row.place %}<br/> {{row.place}} {% endif%}</h6>
-              <p> {{row.header|striptags|safe}} </p>
+              <p> {{content.formatted_teaser}} </p>
+              <a href="{{ row.get_absolute_url }}">read more</a> </p>
+        </div>
+    </div>
+    {% elif row.type.name == 'projects' %}
+    <div class="row results">
+        <div class="small-4 small-offset-2 columns">
+            <img src="{{ row.image_url }}">
+        </div>
+        <div class="small-4 end columns">
+            <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
+              <p> {{content.formatted_teaser}} </p>
               <a href="{{ row.get_absolute_url }}">read more</a> </p>
         </div>
     </div>
