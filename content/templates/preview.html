@@ -2,7 +2,7 @@
     <div class="row right-items">
         <div class="small-6 columns">
             {% if content.image_url %}
-            <img src="{{ content.image_url }}">
+            <a href="{{ content.get_absolute_url }}"><img src="{{ content.image_url }}"></a>
             {% endif %}
         </div>
         <div class="small-6 columns">

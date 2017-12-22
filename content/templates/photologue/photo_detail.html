@@ -10,7 +10,7 @@
         {% if gallery.content.exists %}
         <h6 class="page-header"><a href="{{ gallery.content.all.0.get_absolute_url }}">Back to {{ gallery.content.all.0.title }}</a></h6>
         {% endif %}
-		  <h5>From gallery {{ gallery.title }}</h5>
+		  <h5>{{ gallery.title }}</h5>
               <ul class="slider1">
                     {% for photo.pk in gallery.public %}
                         <li>  
@@ -29,7 +29,7 @@
         </div>
         <div class="medium-3 columns">
             {% if object.public_galleries %}
-                <p>{% trans "Other photos in the gallery" %}:</p>
+                <p>{% trans "Other photos" %}:</p>
                 <table>
                         {% for photo in gallery.public %}
                         <tr>
