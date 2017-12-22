@@ -1,12 +1,16 @@
-{% if content.optbtn2 and content.opttext2 %}
+{% if content.opttext2 %}
 <div class="part2">
+    {% if content.optbtn2 %}
     <h4>{{ content.optbtn2|safe }} </h4>
+    {% endif %}
     <p>{{ content.opttext2|safe|linebreaks }}</p>
 </div>
 {% endif %}
-{% if content.optbtn3 and content.opttext3 %}
+{% if content.opttext3 %}
 <div class="part3">
+    {% if content.optbtn3 %}
     <h4>{{ content.optbtn3|safe }} </h4>
+    {% endif %}
     <p>{{ content.opttext3|safe|linebreaks }}</p>
 </div>
 {% endif %}

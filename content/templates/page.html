@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% include "edit.html" with content=content %}
 <div class="large-8 medium-8 columns special-column">
     <div class="index-text">
     <h4>{{content.title}}</h4>
@@ -12,6 +13,7 @@
     <p>
         {{content.formatted_body|safe}}
     </p>
+    {% include "opt.html" with content=content %}
     </div>
 </div>
 {% endblock %}

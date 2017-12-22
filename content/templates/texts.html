@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% include "edit.html" with content=texts %}
 
 <div class="large-8 medium-8 columns special-column">
     {% if texts.image %}
