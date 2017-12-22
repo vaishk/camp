@@ -45,13 +45,14 @@
                 {% endif %}
 			    <div class="small-6 columns">
 			        <a href="{{ texts.get_absolute_url }}" class="sidebar-title">{{ texts.title }}</a>
-			    	<p> {{texts.header|striptags|truncatechars:100}} </p>
+			        <p> {{ texts.formatted_teaser }} </p>
 			    </div>
 			</div>
 		    {% endfor %}
 			{% else %}
 			    <p>No texts.</p>
 			{% endif %}
+            <a href="{% url 'texts_list' %}">more</a>
 				</div>
 			</div>		
 

@@ -25,7 +25,9 @@
     {% elif row.type.name == 'events' %}
     <div class="row results">
         <div class="small-4 small-offset-2 columns">
-            <img src="{{ row.image_url }}">
+            {% if row.image_url %}
+            <a href="{{ row.get_absolute_url }}"> <img src="{{ row.image_url }}"> </a>
+            {% endif %}
         </div>
         <div class="small-4 end columns">
             <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
@@ -38,7 +40,35 @@
     {% elif row.type.name == 'projects' %}
     <div class="row results">
         <div class="small-4 small-offset-2 columns">
-            <img src="{{ row.image_url }}">
+            {% if row.image_url %}
+            <a href="{{ row.get_absolute_url }}"> <img src="{{ row.image_url }}"> </a>
+            {% endif %}
+        </div>
+        <div class="small-4 end columns">
+            <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
+              <p> {{row.formatted_teaser}} </p>
+              <a href="{{ row.get_absolute_url }}">read more</a> </p>
+        </div>
+    </div>
+    {% elif row.type.name == 'works' %}
+    <div class="row results">
+        <div class="small-4 small-offset-2 columns">
+            {% if row.image_url %}
+            <a href="{{ row.get_absolute_url }}"> <img src="{{ row.image_url }}"> </a>
+            {% endif %}
+        </div>
+        <div class="small-4 end columns">
+            <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
+              <p> {{row.formatted_teaser}} </p>
+              <a href="{{ row.get_absolute_url }}">read more</a> </p>
+        </div>
+    </div>
+    {% elif row.type.name == 'texts' %}
+    <div class="row results">
+        <div class="small-4 small-offset-2 columns">
+            {% if row.image_url %}
+            <a href="{{ row.get_absolute_url }}"> <img src="{{ row.image_url }}"> </a>
+            {% endif %}
         </div>
         <div class="small-4 end columns">
             <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>

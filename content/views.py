@@ -118,8 +118,14 @@ def events(request, shortname=None):
     if not events.published and not request.user.is_staff:
         raise Http404
     gallery = get_or_none(Gallery, slug=shortname)
-    latest_content_list = Content.objects.filter(type__name='events').order_by('-datestart')[:10]
-    return render(request, 'events.html', {'events': events, 'latest_content_list': latest_content_list, 'gallery': gallery})
+    latest_content_list = Content.objects.filter(type__name__in=['events', 'news']).order_by('-datestart')
+    latest_content_list = latest_content_list.exclude(pk=events.pk)
+    latest_content_list = latest_content_list[:10]
+    return render(request, 'events.html', {
+        'events': events,
+        'latest_content_list': latest_content_list,
+        'gallery': gallery
+    })
 
 def projects(request, shortname=None):
     if not shortname:
@@ -129,6 +135,8 @@ def projects(request, shortname=None):
         raise Http404
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='projects').order_by('-datestart')
+    latest_content_list = latest_content_list.exclude(pk=projects.pk)
+    latest_content_list = latest_content_list[:10]
     return render(request, 'projects.html', {
         'projects': projects,
         'latest_content_list': latest_content_list,
@@ -143,7 +151,13 @@ def works(request, shortname=None):
         raise Http404
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='works')
-    return render(request, 'works.html', {'works': works, 'latest_content_list': latest_content_list, 'gallery':gallery})
+    latest_content_list = latest_content_list.exclude(pk=works.pk)
+    latest_content_list = latest_content_list[:10]
+    return render(request, 'works.html', {
+        'works': works,
+        'latest_content_list': latest_content_list,
+        'gallery': gallery
+    })
 
 def texts(request, shortname=None):
     if not shortname:
@@ -151,6 +165,8 @@ def texts(request, shortname=None):
     texts = get_object_or_404(Content, shortname=shortname, type__name='texts')
     gallery = get_or_none(Gallery, slug=shortname)
     latest_content_list = Content.objects.filter(type__name='texts')
+    latest_content_list = latest_content_list.exclude(pk=texts.pk)
+    latest_content_list = latest_content_list[:10]
     return render(request, 'texts.html', {
         'texts': texts,
         'latest_content_list': latest_content_list,

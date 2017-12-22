@@ -39,13 +39,14 @@
 			    </div>
 			    <div class="small-6 columns">
 			        <a href="{{ works.get_absolute_url }}" class="sidebar-title">{{ works.title }}</a>
-			    	<p> {{works.header|striptags|truncatechars:100}} </p>
+                    <p> {{ works.formatted_teaser }} </p>
 			    </div>
 			</div>
 		    {% endfor %}
 			{% else %}
 			    <p>No works.</p>
 			{% endif %}
+            <a href="{% url 'works_list' %}">more</a>
 				</div>
 			</div>		
 
