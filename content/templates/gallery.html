@@ -2,7 +2,7 @@
     <h6><strong>Gallery: {{gallery.title}}</strong></h6>
     <ul class="clearing-thumbs" data-clearing>
     {% for photo in gallery.public %}
-      <li><a href="{{ photo.get_absolute_url }}"><img src="{{ photo.get_thumbnail_url }}"></a></li>
+        <li><a href="{{ gallery.get_absolute_url }}#{{forloop.counter}}"><img src="{{ photo.get_thumbnail_url }}"></a></li>
     {% endfor %}
     </ul>
 {% endif %}

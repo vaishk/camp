@@ -59,9 +59,16 @@
         document.querySelectorAll('.select-image').forEach(function(a) {
             a.onclick = function(event) {
                 event.preventDefault();
-                slider.goToSlide(this.dataset.id)
+                slider.goToSlide(parseInt(this.dataset.id) - 1)
+                document.location.hash = '#' + this.dataset.id;
             };
         });
+        if (document.querySelectorAll('.select-image').length && document.location.hash.length) {
+            var slide = parseInt(document.location.hash.slice(1))
+            if (slide) {
+                slider.goToSlide(slide - 1)
+            }
+        }
 
         $(document).keydown(function(e){
             if (e.keyCode == 39) // Right arrow 

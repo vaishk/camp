@@ -4,45 +4,21 @@
 {% block title %}{{ object.title }}{% endblock %}
 
 {% block content %}
-{% for gallery in object.public_galleries %}
-    <div class="row">
-        <div class="medium-9 columns">
+<div class="row">
+    <div class="medium-9 columns">
+        <img src="{{ object.get_display_url }}" alt="{{ object.title }}">
+        <p>
+            {{ object.caption|safe }}
+            {% if object.caption %}<br>{%endif%}
+            <a href="{{ object.image.url }}" target="_blank" >Link to original file</a>
+        </p>
+        <ul>
+        {% for gallery in object.public_galleries %}
             {% if gallery.content.exists %}
-            <h6 class="page-header"><a href="{{ gallery.content.all.0.get_absolute_url }}">Back to {{ gallery.content.all.0.title }}</a></h6>
+            <li><a href="{{ gallery.content.all.0.get_absolute_url }}">{{ gallery.content.all.0.title }}</a></li>
             {% endif %}
-            <h5>{{ gallery.title }}</h5>
-            <ul class="slider1">
-                {% for photo in gallery.public %}
-                <li id="slide-{{photo.slug}}">
-                    <img src="{{ photo.get_display_url }}" alt="{{ photo.title }}">
-                    <p>
-                        {{ photo.caption|safe }}
-                        {% if photo.caption %}<br>{%endif%}
-                        <a href="{{ photo.image.url }}" target="_blank" >Link to original file</a>
-                    </p>
-
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="medium-3 columns">
-            {% if object.public_galleries %}
-                <br>
-                <p>{% trans "Other photos" %}:</p>
-                <div>
-                        {% for photo in gallery.public %}
-                        <div style="float: left; padding: 4px">
-                            <a href="{{ photo.get_absolute_url }}" class="select-image" data-id="{{forloop.counter}}">
-                                <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}">
-                            </a>
-                        </div>
-                        {% endfor %}
-                </div>
-            {% endif %}
-        </div>
+        {% endfor %}
+        </ul>
     </div>
-{% endfor %}
-<script>
-</script>
-
+</div>
 {% endblock %}
