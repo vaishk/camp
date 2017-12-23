@@ -50,16 +50,19 @@ def section_content(section):
     return content
 
 
-def section_index(request, section):
+def section_index(request, section, max_length=10):
     types = SECTION_TYPE.get(section, [section.lower()])
     featured = Content.objects.filter(type__name__in=types, featured=True).order_by('-datestart')[:1]
     content = section_content(section)
     if featured:
         content = content.exclude(pk=featured[0].pk)
+    more_content = content.count() > max_length
+    content = content[:max_length]
     return render(request, 'section_index.html', {
         'section': section,
         'featured': featured,
-        'content': content
+        'content': content,
+        'more_content': more_content,
     })
 
 
@@ -117,7 +120,7 @@ def get_related_content(types, current=None, max_length=10):
     if current:
         latest_content_list = latest_content_list.exclude(pk=current.pk)
     latest_content_list = latest_content_list.filter(published=True)
-    more = latest_content_list.count > max_length
+    more = latest_content_list.count() > max_length
     latest_content_list = latest_content_list[:max_length]
     return latest_content_list, more
 
@@ -153,7 +156,7 @@ def works(request, shortname=None):
 
 
 def texts(request, shortname=None):
-    return render_content(requests, shortname, 'Texts', 'content.html', ['texts'])
+    return render_content(request, shortname, 'Texts', 'content.html', ['texts'])
 
 
 def page(request, shortname):

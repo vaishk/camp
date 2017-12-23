@@ -1,4 +1,14 @@
 <div class="row right-items">
+    {% if content.type.name == 'news' %}
+    <div class= "small-12 columns">
+        <h6 class="sidebar-date">
+            <font color="#ef4e5c"> <b> {{content.datestart}} </b> 
+            {{ content.title }} <br />
+            {{ content.formatted_header }}
+            </font>
+        </h6>
+    </div>
+    {% else %}
     <div class="small-6 columns">
         {% if content.image_url %}
         <a href="{{ content.get_absolute_url }}"><img src="{{ content.image_url }}"></a>
@@ -15,5 +25,6 @@
         </h6>
         {% endif %}
         <p> {{ content.formatted_teaser }} </p>
-        </div>
+    </div>
+    {% endif %}
 </div>

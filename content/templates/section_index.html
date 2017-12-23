@@ -4,6 +4,7 @@
     {% include "featured.html" %}
 
     <div class="large-4 medium-4 columns">
+        {% if content %}
         <h4 class="sidebar-h4"> {{ section }} </h4>
         <div class="row">
             {% for content in content %}
@@ -19,8 +20,11 @@
                 </div>
             </div>
             {% endfor %}
+            {% if more_content %}
             <a href="index/">more</a>
+            {% endif %}
         </div>
+        {% endif %}
     </div>
 
  {% endblock %}
