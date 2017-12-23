@@ -1,7 +1,9 @@
 {% if related %}
 <h4 class="sidebar-h4"> Related </h4>
 {% for content in related %}
-{% include "preview.html" %}
+    <div class="row">
+        {% include "preview.html" %}
+    </div>
 {% endfor %}
 <br>
 <br>

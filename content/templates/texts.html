@@ -2,58 +2,16 @@
 
 {% block content %}
     {% include "edit.html" with content=texts %}
-
-<div class="large-8 medium-8 columns special-column">
-    {% if texts.image %}
-	<img src="{{ texts.image_url }}">
-    {% endif %}
-	<div class="index-text">
-	<h4><a href="{{ texts.get_absolute_url }}/" class="big-title">{{texts.title}} </a></h4>
-	<p> {{texts.formatted_header|safe}} </p>
-	<p> {{texts.formatted_body|safe}} </p>
-    {% include "opt.html" with content=texts %}
-</div>
-</div>
-
-{% if latest_content_list %}
-
-	<div class="large-4 medium-4 columns">
-	{% if texts.children.all %}
-		<h4 class="sidebar-h4"> Related </h4>
-		{% for child in texts.children.all %}
-		<div class="row related-row">
-        {% if child.image %}
-		<div class="small-6 columns">
-			<a href="{{ child.get_absolute_url }}"> <img src="{{ child.image_url }}"> </a>
-		</div>
+    <div class="large-8 medium-8 columns special-column">
+        {% if texts.image %}
+        <img src="{{ texts.image_url }}">
         {% endif %}
-		<div class="small-6 columns">
-		<h6><a href="{{ child.get_absolute_url }}" class="sidebar-title"> {{child}} </a> </h6>
-		</div>
-		</div>
-		{% endfor %}
-		{% endif %}
-		<h4 class="sidebar-h4"> Texts </h4>
-		<div class="row">
-		
-		    {% for texts in latest_content_list %}
-		    <div class="row right-items">
-                {% if texts.image %}
-			    <div class="small-6 columns">
-			        <a href="{{ texts.get_absolute_url }}"> <img src="{{ texts.image_url }}"></a>
-			    </div>
-                {% endif %}
-			    <div class="small-6 columns">
-			        <a href="{{ texts.get_absolute_url }}" class="sidebar-title">{{ texts.title }}</a>
-			        <p> {{ texts.formatted_teaser }} </p>
-			    </div>
-			</div>
-		    {% endfor %}
-			{% else %}
-			    <p>No texts.</p>
-			{% endif %}
-            <a href="{% url 'texts_list' %}">more</a>
-				</div>
-			</div>		
-
+        <div class="index-text">
+            <h4><a href="{{ texts.get_absolute_url }}/" class="big-title">{{texts.title}} </a></h4>
+            <p> {{texts.formatted_header|safe}} </p>
+            <p> {{texts.formatted_body|safe}} </p>
+            {% include "opt.html" with content=texts %}
+        </div>
+    </div>
+    {% include "latest_content.html" with content=texts %}
 {% endblock %}

@@ -22,68 +22,23 @@
             </h6>
         </div>
     </div>
-    {% elif row.type.name == 'events' %}
-    <div class="row results">
-        <div class="small-4 small-offset-2 columns">
-            {% if row.image_url %}
-            <a href="{{ row.get_absolute_url }}"> <img src="{{ row.image_url }}"> </a>
-            {% endif %}
-        </div>
-        <div class="small-4 end columns">
-            <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
-             <h6 class="sidebar-date"> <font color="#ef4e5c">  <b> {{ row.datestart }} {% if row.dateend %} - {{row.dateend}} {% endif %} </b></font> 
-             {% if row.place %}<br/> {{row.place}} {% endif%}</h6>
-              <p> {{row.formatted_teaser}} </p>
-              <a href="{{ row.get_absolute_url }}">read more</a> </p>
-        </div>
-    </div>
-    {% elif row.type.name == 'projects' %}
-    <div class="row results">
-        <div class="small-4 small-offset-2 columns">
-            {% if row.image_url %}
-            <a href="{{ row.get_absolute_url }}"> <img src="{{ row.image_url }}"> </a>
-            {% endif %}
-        </div>
-        <div class="small-4 end columns">
-            <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
-              <p> {{row.formatted_teaser}} </p>
-              <a href="{{ row.get_absolute_url }}">read more</a> </p>
-        </div>
-    </div>
-    {% elif row.type.name == 'works' %}
-    <div class="row results">
-        <div class="small-4 small-offset-2 columns">
-            {% if row.image_url %}
-            <a href="{{ row.get_absolute_url }}"> <img src="{{ row.image_url }}"> </a>
-            {% endif %}
-        </div>
-        <div class="small-4 end columns">
-            <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
-              <p> {{row.formatted_teaser}} </p>
-              <a href="{{ row.get_absolute_url }}">read more</a> </p>
-        </div>
-    </div>
-    {% elif row.type.name == 'texts' %}
-    <div class="row results">
-        <div class="small-4 small-offset-2 columns">
-            {% if row.image_url %}
-            <a href="{{ row.get_absolute_url }}"> <img src="{{ row.image_url }}"> </a>
-            {% endif %}
-        </div>
-        <div class="small-4 end columns">
-            <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
-              <p> {{row.formatted_teaser}} </p>
-              <a href="{{ row.get_absolute_url }}">read more</a> </p>
-        </div>
-    </div>
     {% else %}
-    {% if request.user.is_staff %}
-    <div class="row">
+    <div class="row results">
         <div class="small-4 small-offset-2 columns">
-        Add view for content type: {{row.type}}
+            {% if row.image_url %}
+            <a href="{{ row.get_absolute_url }}"> <img src="{{ row.image_url }}"> </a>
+            {% endif %}
+        </div>
+        <div class="small-4 end columns">
+            <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
+            {% if row.type.name == 'events' %}
+            <h6 class="sidebar-date"> <font color="#ef4e5c">  <b> {{ row.datestart }} {% if row.dateend %} - {{row.dateend}} {% endif %} </b></font> 
+            {% if row.place %}<br/> {{row.place}} {% endif%}</h6>
+            {% endif %}
+            <p> {{row.formatted_teaser}} </p>
+            <a href="{{ row.get_absolute_url }}">read more</a> </p>
         </div>
     </div>
-    {% endif %}
     {% endif %}
     {% endfor %}
     <br>

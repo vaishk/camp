@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include "edit.html" %}
+    <div class="large-8 medium-8 columns special-column">
+        {% if content.image %}
+        <img src="{{ content.image_url }}">
+        {% endif %}
+        <div class="index-text">
+            <h4><a href="{{ content.get_absolute_url }}" class="big-title">{{content.title}}</a></h4>
+            <p> {{content.formatted_header|safe}} </p>
+            <p> {{content.formatted_body|safe}} </p>
+            {% include "opt.html" %}
+            {% include "links.html" %}
+            {% include "gallery.html" with gallery=content.gallery %}
+        </div>
+    </div>
+    {% include "latest_content.html" %}
+{% endblock %}

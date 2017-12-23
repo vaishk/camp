@@ -25,7 +25,7 @@ def index(request):
     base = base.filter(published=True)
     upcoming_events = base.filter(datestart__gt=now)[:12]
     ongoing_events = base.filter(datestart__lt=now, dateend__gte=now)[:12]
-    past_events = base.filter(Q(dateend__lt=now)|Q(dateend=None, datestart__lt=now))[:12]
+    past_events = base.filter(Q(dateend__lt=now) | Q(dateend=None, datestart__lt=now))[:12]
 
     homepage = Content.objects.filter(type__name='homepage').order_by('-datestart')[:1]
     context = {
@@ -84,9 +84,9 @@ def section_list(request, section):
 
     return render(request, 'results.html', {
         'base_query': base_query,
-        'section': section,
         'content': content,
-        'query': q
+        'query': q,
+        'section': section,
     })
 
 def event(request):
@@ -107,71 +107,53 @@ def event(request):
         'ongoing_events': ongoing_events,
         'past_events': past_events,
         'featured': featured,
+        'section': 'Events',
     }
     return render(request, 'event.html', context)
 
 
-def events(request, shortname=None):
+def get_related_content(types, current=None, max_length=10):
+    latest_content_list = Content.objects.filter(type__name__in=types).order_by('-datestart')
+    if current:
+        latest_content_list = latest_content_list.exclude(pk=current.pk)
+    latest_content_list = latest_content_list.filter(published=True)
+    more = latest_content_list.count > max_length
+    latest_content_list = latest_content_list[:max_length]
+    return latest_content_list, more
+
+
+def render_content(request, shortname, section, template, types):
     if not shortname:
-        return event(request)
-    events = get_object_or_404(Content, shortname=shortname, type__name__in=['news', 'events'])
-    if not events.published and not request.user.is_staff:
+        if section == 'Events':
+            return event(request)
+        else:
+            return section_index(request, section)
+    content = get_object_or_404(Content, shortname=shortname, type__name__in=types)
+    if not content.published and not request.user.is_staff:
         raise Http404
-    gallery = get_or_none(Gallery, slug=shortname)
-    latest_content_list = Content.objects.filter(type__name__in=['events', 'news']).order_by('-datestart')
-    latest_content_list = latest_content_list.exclude(pk=events.pk)
-    latest_content_list = latest_content_list[:10]
-    return render(request, 'events.html', {
-        'events': events,
+    latest_content_list, more = get_related_content(types, content)
+    return render(request, template, {
+        'content': content,
         'latest_content_list': latest_content_list,
-        'gallery': gallery
+        'has_more_content': more,
+        'section': section,
     })
+
+
+def events(request, shortname=None):
+    return render_content(request, shortname, 'Events', 'content.html', ['events', 'news'])
+
 
 def projects(request, shortname=None):
-    if not shortname:
-        return section_index(request, 'Projects')
-    projects = get_object_or_404(Content, shortname=shortname, type__name='projects')
-    if not projects.published and not request.user.is_staff:
-        raise Http404
-    gallery = get_or_none(Gallery, slug=shortname)
-    latest_content_list = Content.objects.filter(type__name='projects').order_by('-datestart')
-    latest_content_list = latest_content_list.exclude(pk=projects.pk)
-    latest_content_list = latest_content_list[:10]
-    return render(request, 'projects.html', {
-        'projects': projects,
-        'latest_content_list': latest_content_list,
-        'gallery': gallery
-    })
+    return render_content(request, shortname, 'Projects', 'content.html', ['projects'])
+
 
 def works(request, shortname=None):
-    if not shortname:
-        return section_index(request, 'Works')
-    works = get_object_or_404(Content, shortname=shortname, type__name='works')
-    if not works.published and not request.user.is_staff:
-        raise Http404
-    gallery = get_or_none(Gallery, slug=shortname)
-    latest_content_list = Content.objects.filter(type__name='works')
-    latest_content_list = latest_content_list.exclude(pk=works.pk)
-    latest_content_list = latest_content_list[:10]
-    return render(request, 'works.html', {
-        'works': works,
-        'latest_content_list': latest_content_list,
-        'gallery': gallery
-    })
+    return render_content(request, shortname, 'Works', 'content.html', ['works'])
+
 
 def texts(request, shortname=None):
-    if not shortname:
-        return section_index(request, 'Texts')
-    texts = get_object_or_404(Content, shortname=shortname, type__name='texts')
-    gallery = get_or_none(Gallery, slug=shortname)
-    latest_content_list = Content.objects.filter(type__name='texts')
-    latest_content_list = latest_content_list.exclude(pk=texts.pk)
-    latest_content_list = latest_content_list[:10]
-    return render(request, 'texts.html', {
-        'texts': texts,
-        'latest_content_list': latest_content_list,
-        'gallery': gallery
-    })
+    return render_content(requests, shortname, 'Texts', 'content.html', ['texts'])
 
 
 def page(request, shortname):
@@ -185,6 +167,7 @@ def limit_content(content, q):
     if q:
         content = content.filter(Q(body__icontains=q) | Q(title__icontains=q) | Q(header__icontains=q)).distinct()
     return content
+
 
 def search(request):
     content = Content.objects.filter(published=True).order_by('-datestart')
