@@ -4,7 +4,7 @@
 {% block content %}
 <div class="row">
     <div class="row">
-        <div class="small-4 small-offset-2 columns results-title">
+        <div class="medium-8 medium-offset-2 columns results-title">
             {% if section %}
             <h3> {{section }}</h3>
             {% else %}
@@ -15,7 +15,7 @@
     {% for row in content %}
     {% if row.type.name == 'news' %}
     <div class="row">
-        <div class= "small-4 small-offset-2 columns">
+        <div class= "medium-8 medium-offset-2 columns">
             <h6 class="sidebar-date"> <font color="#ef4e5c"> <b> {{row.datestart}} </b> 
             {{ row.title }} <br />
             {{ row.formatted_header|striptags|safe }} </font> 
@@ -24,12 +24,12 @@
     </div>
     {% else %}
     <div class="row results">
-        <div class="small-4 small-offset-2 columns">
+        <div class="small-6 medium-4 medium-offset-2 large-2 large-offset-2 columns">
             {% if row.image_url %}
             <a href="{{ row.get_absolute_url }}"> <img src="{{ row.image_url }}"> </a>
             {% endif %}
         </div>
-        <div class="small-4 end columns">
+        <div class="small-6 medium-4 end columns">
             <a href="{{ row.get_absolute_url }}" class="sidebar-title">{{ row.title }}</a>
             {% if row.type.name == 'events' %}
             <h6 class="sidebar-date"> <font color="#ef4e5c">  <b> {{ row.datestart }} {% if row.dateend %} - {{row.dateend}} {% endif %} </b></font> 
@@ -45,7 +45,7 @@
     <br>
     {% if content.has_other_pages %}
     <div class="row">
-        <div class="small-4 small-offset-4 columns">
+        <div class="medium-8 medium-offset-2 end columns">
           <ul class="pagination">
             {% if content.has_previous %}
               <li><a href="?{{ base_query }}&page={{ content.previous_page_number }}">&laquo;</a></li>

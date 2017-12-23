@@ -179,7 +179,11 @@ table thead, table tbody, table tfoot {
   font-weight: 600;
 }
 
-
+.content-date {
+	font-size: 14px;
+	font-weight: 600;
+	text-transform: uppercase;
+}
 
 
 
