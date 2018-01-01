@@ -124,6 +124,8 @@ class Content(models.Model):
     @property
     def image_url(self):
         if self.image:
+            if self.image.startswith('http'):
+                return self.image
             return settings.IMAGE_PREFIX + self.image
 
     def images(self):
