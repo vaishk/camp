@@ -52,7 +52,7 @@ class GalleryAdmin(GalleryAdminDefault):
 
 class ContentAdmin(admin.ModelAdmin):
     save_on_top = True
-    list_display = ('__str__', 'datestart', 'shortname', 'type')
+    list_display = ('id', '__str__', 'datestart', 'shortname', 'type')
     list_filter = ['datestart', 'type']
     search_fields = ['title', 'body', 'header', 'shortname']
     inlines = [ContentParentsInline, FileInline, LinkInline]

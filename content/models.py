@@ -110,7 +110,7 @@ class Content(models.Model):
     @property
     def formatted_teaser(self):
         if self.teaser:
-            value = self.teaser
+            value = markdownify(self.teaser)
         elif self.header:
             value = ox.strip_tags(ox.decode_html(markdownify(self.header)))[:100]
         else:
@@ -124,7 +124,7 @@ class Content(models.Model):
     @property
     def image_url(self):
         if self.image:
-            if self.image.startswith('http'):
+            if self.image.startswith('http') or self.image.startswith('/'):
                 return self.image
             return settings.IMAGE_PREFIX + self.image
 

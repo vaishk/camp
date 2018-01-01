@@ -16,7 +16,7 @@ from photologue.models import Photo, Gallery
 
 from .models import Content, ContentContent
 
-# Create your views here.
+ITEMS_PER_PAGE = 30
 
 def index(request):
     now = datetime.now()
@@ -73,7 +73,7 @@ def section_list(request, section):
     content = limit_content(content, q)
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(content, 5)
+    paginator = Paginator(content, ITEMS_PER_PAGE)
     try:
         content = paginator.page(page)
     except PageNotAnInteger:
@@ -103,7 +103,7 @@ def event(request):
 
     upcoming_events = base.filter(datestart__gt=now).order_by('-datestart')
     ongoing_events = base.filter(datestart__lt=now, dateend__gte=now).order_by('-datestart')
-    past_events = base.filter(Q(dateend__lt=now) | Q(dateend=None, datestart__lt=now))[:10]
+    past_events = base.filter(Q(dateend__lt=now) | Q(dateend=None, datestart__lt=now)).order_by('-datestart')[:10]
 
     context = {
         'upcoming_events': upcoming_events,
@@ -178,7 +178,7 @@ def search(request):
     q = request.GET.get('q')
     content = limit_content(content, q)
     page = request.GET.get('page', 1)
-    paginator = Paginator(content, 5)
+    paginator = Paginator(content, ITEMS_PER_PAGE)
     try:
         content = paginator.page(page)
     except PageNotAnInteger:
@@ -199,7 +199,7 @@ def search(request):
 
 class GalleryListViews(ListView):
     queryset = Gallery.objects.on_site().is_public()
-    paginate_by = 20
+    paginate_by = ITEMS_PER_PAGE
     template_name = 'gallery_list.html'
 
 def get_or_none(classmodel, **kwargs):

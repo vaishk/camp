@@ -1,4 +1,4 @@
-static
+/static
 data
 *.pyc
 __pycache__
