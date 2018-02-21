@@ -3,18 +3,21 @@ from __future__ import unicode_literals
 
 from datetime import datetime
 
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import EmailMessage
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views.generic.list import ListView
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from photologue.views import GalleryListView 
 from photologue.models import Photo, Gallery
 
 from .models import Content, ContentContent
+from . import forms
 
 ITEMS_PER_PAGE = 30
 
@@ -164,6 +167,26 @@ def page(request, shortname):
     if not content.published and not request.user.is_staff:
         raise Http404
     return render(request, 'page.html', {'content': content})
+
+def contact(request):
+    context = {}
+    if request.method == 'POST':
+        form = forms.ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            subject = '{} has left a message on studio.camp'.format(name)
+            from_ = settings.CONTACT_FROM_EMAIL
+            to = settings.CONTACT_TO_EMAIL
+            msg = EmailMessage(subject, message, from_, to, reply_to=[email])
+            msg.send(fail_silently=True)
+            #msg.send()
+            context['sent'] = True
+    else:
+        form = forms.ContactForm()
+    context['form'] = form
+    return render(request, 'contact.html', context)
 
 
 def limit_content(content, q):

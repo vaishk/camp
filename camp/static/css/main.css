@@ -187,3 +187,9 @@ table thead, table tbody, table tfoot {
 
 
 
+label, button {
+	color: #ffffff !important;
+}
+button {
+    background: #99999 !important;
+}

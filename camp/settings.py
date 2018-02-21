@@ -145,6 +145,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'data/images')
 
 IMAGE_PREFIX = 'http://studio.camp/images/'
 
+CONTACT_FROM_EMAIL = 'contact@studio.camp'
+CONTACT_TO_EMAIL = ['contact@studio.camp']
+
 try:
     from local_settings import *
 except:

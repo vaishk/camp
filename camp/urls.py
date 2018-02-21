@@ -36,6 +36,8 @@ urlpatterns = [
     url(r'directions.html', RedirectView.as_view(url='/directions/')),
     url(r'campstudio.html', RedirectView.as_view(url='/directions/')),
 
+    url(r'^contact/$', views.contact),
+
     url(r'^texts/index/$', views.section_list, {'section': 'Texts'}, name='texts_list'),
     url(r'^events/index/$', views.section_list, {'section': 'Events'}, name='events_list'),
     url(r'^projects/index/$', views.section_list, {'section': 'Projects'}, name='projects_list'),

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="large-8 medium-8 columns special-column">
+    <div class="index-text">
+    {% if sent %}
+    <p>Thanks for getting in touch!</p>
+    {% else %}
+    <form method="post">
+        {% csrf_token %}
+        {{form}}
+        <br>
+        <input type="submit" value="Send Message">
+    </form>
+    {% endif %}
+    </div>
+    </div>
+{% endblock %}
