@@ -14,7 +14,7 @@ def available_content():
     for type in ['projects', 'events', 'works', 'texts']:
         if Content.objects.filter(type__name=type, published=True).exists():
             sections.append([
-                reverse('works'),
+                reverse(type),
                 type.capitalize()
             ])
     return sections
