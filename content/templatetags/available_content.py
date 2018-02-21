@@ -15,6 +15,6 @@ def available_content():
         if Content.objects.filter(type__name=type, published=True).exists():
             sections.append([
                 reverse(type),
-                type.capitalize()
+                type.upper()
             ])
     return sections
