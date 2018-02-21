@@ -1,3 +1,4 @@
+{% load available_content%}
 <!doctype html>
 <html class="no-js" lang="en">
   <head>
@@ -21,10 +22,10 @@
     <ul class="vertical-menu">
         <li><a href="/">HOME</a></li>
         <li><a href="/about">ABOUT</a></li>
-        <li><a href="/projects">PROJECTS</a></li>
-        <li><a href="/events">EVENTS</a></li>
-        <li><a href="/works">WORKS</a></li>
-        <li><a href="/texts">TEXTS</a></li>
+        {% available_content as sections %}
+        {% for url, title in sections %}
+        <li><a href="{Purl}}">{{title}}</a></li>
+        {% endfor %}
         <li><a href="/contact">CONTACT</a></li>
       </ul>
     </div>
