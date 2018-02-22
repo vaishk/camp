@@ -125,7 +125,7 @@ class Content(models.Model):
 
     @property
     def image_url(self):
-        if self.photo.image.url:
+        if self.photo:
             return self.photo.image.url
         if self.image:
             if self.image.startswith('http') or self.image.startswith('/'):
