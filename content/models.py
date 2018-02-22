@@ -76,7 +76,9 @@ class Content(models.Model):
     optbtn3 = models.CharField(db_column='optBtn3', max_length=127, blank=True, null=True)  # Field name made lowercase.
     opttext3 = models.TextField(db_column='optText3', blank=True, null=True)  # Field name made lowercase.
     technotes = models.TextField(db_column='technotes', blank=True, null=True)
-    image = models.CharField(max_length=150, blank=True, null=True)
+    image = models.CharField(max_length=150, blank=True, null=True, editable=False)
+    photo = models.ForeignKey('Image', Photo, null=True, blank=True, related_name="main_photo")
+
     postedby = models.CharField(db_column='postedBy', max_length=50, blank=True, null=True)  # Field name made lowercase.
     datestart = models.DateField(db_column='dateStart', blank=True, null=True)  # Field name made lowercase.
     dateend = models.DateField(db_column='dateEnd', blank=True, null=True)  # Field name made lowercase.
@@ -123,6 +125,8 @@ class Content(models.Model):
 
     @property
     def image_url(self):
+        if self.photo.image.url:
+            return self.photo.image.url
         if self.image:
             if self.image.startswith('http') or self.image.startswith('/'):
                 return self.image
@@ -174,6 +178,8 @@ class ContentContent(models.Model):
     class Meta:
         # managed = False
         db_table = 'content_content'
+        verbose_name = 'related content'
+        verbose_name_plural = 'related content'
 
     def reverse(self):
         r, created = ContentContent.objects.get_or_create(contentid1=self.contentid2, contentid2=self.contentid1)

@@ -55,6 +55,7 @@ class ContentAdmin(admin.ModelAdmin):
     list_display = ('id', '__str__', 'datestart', 'shortname', 'type')
     list_filter = ['datestart', 'type']
     search_fields = ['title', 'body', 'header', 'shortname']
+    raw_id_fields = ['photo']
     inlines = [ContentParentsInline, FileInline, LinkInline]
     formfield_overrides = {
         models.TextField: {'widget': AdminMarkdownxWidget},
