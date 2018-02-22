@@ -77,7 +77,7 @@ class Content(models.Model):
     opttext3 = models.TextField(db_column='optText3', blank=True, null=True)  # Field name made lowercase.
     technotes = models.TextField(db_column='technotes', blank=True, null=True)
     image = models.CharField(max_length=150, blank=True, null=True, editable=False)
-    photo = models.ForeignKey('Image', Photo, null=True, blank=True, related_name="main_photo")
+    photo = models.ForeignKey(Photo, null=True, blank=True, related_name="main_photo")
 
     postedby = models.CharField(db_column='postedBy', max_length=50, blank=True, null=True)  # Field name made lowercase.
     datestart = models.DateField(db_column='dateStart', blank=True, null=True)  # Field name made lowercase.

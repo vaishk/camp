@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='content',
             name='photo',
-            field=models.ForeignKey(blank=True, null=True, on_delete=photologue.models.Photo, related_name='main_photo', to='content.Image'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=photologue.models.Photo, related_name='main_photo', to='photologue.Photo'),
         ),
         migrations.AlterField(
             model_name='content',
