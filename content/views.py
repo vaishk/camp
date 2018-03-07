@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from datetime import datetime
+import re
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -246,7 +247,9 @@ def redirect_event(request):
         content = get_object_or_404(Content, shortname=shortname)
         return redirect(content.get_absolute_url())
     id = request.GET.get('id')
+    id = re.compile('\d+').findall(id)
     if id:
+        id = id[0]
         content = get_object_or_404(Content, id=id)
         return redirect(content.get_absolute_url())
 

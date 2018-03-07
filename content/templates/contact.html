@@ -6,13 +6,23 @@
     {% if sent %}
     <p>Thanks for getting in touch!</p>
     {% else %}
-    <form method="post">
-        {% csrf_token %}
+    <form id="contact" method="post">
+        <input id="csrf" type='hidden' name='csrfmiddlewaretoken' value='' />
         {{form}}
         <br>
-        <input type="submit" value="Send Message">
+        <input id="captcha" type="button" value="Send Message">
     </form>
     {% endif %}
     </div>
     </div>
+{% endblock %}
+{% block end %}
+    <script>
+        $('#captcha').on({
+            click: function() {
+                $('#csrf').val(getCookie('csrftoken'))
+                $('#contact').submit()
+            }
+        });
+    </script>
 {% endblock %}
