@@ -20,9 +20,11 @@
     <script>
         $('#captcha').on({
             click: function() {
-                $('#csrf').val(getCookie('csrftoken'))
+                var token = $('input[name="csrfmiddlewaretoken"]')[1].value;
+                $('#csrf').val(token)
                 $('#contact').submit()
             }
         });
     </script>
+    {% csrf_token %}
 {% endblock %}
