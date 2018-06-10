@@ -247,7 +247,8 @@ def redirect_event(request):
         content = get_object_or_404(Content, shortname=shortname)
         return redirect(content.get_absolute_url())
     id = request.GET.get('id')
-    id = re.compile('\d+').findall(id)
+    if id:
+        id = re.compile('\d+').findall(id)
     if id:
         id = id[0]
         content = get_object_or_404(Content, id=id)

@@ -69,7 +69,7 @@ class Content(models.Model):
     header = MarkdownxField(blank=True, null=True, default='')
     body = MarkdownxField(blank=True, null=True, default='')
     teaser = models.TextField(blank=True, null=True, validators=[MaxLengthValidator(200)])
-    schedule = models.TextField(blank=True, null=True)    
+    schedule = MarkdownxField(blank=True, null=True, default='')
     schedulebutton = models.CharField(db_column='scheduleButton', max_length=255, blank=True, null=True)  # Field name made lowercase.
     optbtn2 = models.CharField(db_column='optBtn2', max_length=127, blank=True, null=True)  # Field name made lowercase.
     opttext2 = models.TextField(db_column='optText2', blank=True, null=True)  # Field name made lowercase.
@@ -118,6 +118,10 @@ class Content(models.Model):
         else:
             value = ''
         return mark_safe(value)
+
+    @property
+    def formatted_schedule(self):
+        return mark_safe(markdownify(self.schedule))
 
     @property
     def typefilter(self):

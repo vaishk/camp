@@ -17,6 +17,6 @@
 {% if content.schedule %}
 <div class="schedule">
     <h4>{{content.schedulebutton|default:"Schedule"}}</h4>
-    <p>{{ content.schedule|safe|linebreaks }}</p>
+    <p>{{ content.formatted_schedule }}</p>
 </div>
 {% endif %}
