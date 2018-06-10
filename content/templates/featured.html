@@ -1,6 +1,6 @@
 {% for content in featured %}
 <div class="large-8 medium-8 columns special-column">
-    {% if content.image %}
+    {% if content.image_url %}
     <a href="{{ content.get_absolute_url }}"><img src="{{ content.image_url }}"> </a>
     {% endif %}
     <div class="index-text">

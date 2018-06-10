@@ -3,7 +3,7 @@
 {% block content %}
     {% include "edit.html" %}
     <div class="large-8 medium-8 columns special-column">
-        {% if content.image %}
+        {% if content.image_url %}
         <img src="{{ content.image_url }}">
         {% endif %}
         <div class="index-text">
