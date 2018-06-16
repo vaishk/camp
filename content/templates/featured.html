@@ -5,7 +5,7 @@
     {% endif %}
     <div class="index-text">
         <h4><a href="{{ content.get_absolute_url }}" class="big-title">{{content.title}} </a></h4>
-        {% if content.datestart %}
+        {% if content.type.name == 'events' and content.datestart %}
         <h6 class="big-date"> <font color="#ef4e5c"> <b> {{ content.datestart }} </b></font>
             {% if content.place %}<br/>{{content.place}}{% endif%}
         </h6>
