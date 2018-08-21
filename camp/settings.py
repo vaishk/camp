@@ -148,6 +148,8 @@ IMAGE_PREFIX = 'http://studio.camp/images/'
 CONTACT_FROM_EMAIL = 'contact@studio.camp'
 CONTACT_TO_EMAIL = ['contact@studio.camp']
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 150 * 1024 * 1024
+
 try:
     from local_settings import *
 except:
@@ -169,4 +171,4 @@ except NameError:
             secret.write(SECRET_KEY)
             secret.close()
         except IOError:
-            Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
+            raise Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
