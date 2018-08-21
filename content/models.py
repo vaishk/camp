@@ -68,7 +68,7 @@ class Content(models.Model):
     title = models.CharField(max_length=255)
     header = MarkdownxField(blank=True, null=True, default='')
     body = MarkdownxField(blank=True, null=True, default='')
-    teaser = models.TextField(blank=True, null=True, validators=[MaxLengthValidator(200)])
+    teaser = models.TextField(blank=True, null=True, validators=[MaxLengthValidator(250)])
     schedule = MarkdownxField(blank=True, null=True, default='')
     schedulebutton = models.CharField(db_column='scheduleButton', max_length=255, blank=True, null=True)  # Field name made lowercase.
     optbtn2 = models.CharField(db_column='optBtn2', max_length=127, blank=True, null=True)  # Field name made lowercase.
