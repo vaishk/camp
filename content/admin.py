@@ -39,6 +39,20 @@ class ServerAdmin(admin.ModelAdmin):
     pass
 '''
 
+class MaxLengthAdminMarkdownxWidget(AdminMarkdownxWidget):
+    def get_context(self, name, value, attrs=None):
+        if name == 'teaser':
+            if not attrs:
+                attrs = {}
+            attrs['maxlength'] = 250
+            print(dir(self))
+        return super(MaxLengthAdminMarkdownxWidget, self).get_context(name, value, attrs)
+
+    class Media:
+        js = (
+            'js/maxlength_count.js',
+        )
+
 class GalleryAdminForm(forms.ModelForm):
     """Users never need to enter a description on a gallery."""
 
@@ -58,7 +72,7 @@ class ContentAdmin(admin.ModelAdmin):
     raw_id_fields = ['photo']
     inlines = [ContentParentsInline, FileInline, LinkInline]
     formfield_overrides = {
-        models.TextField: {'widget': AdminMarkdownxWidget},
+        models.TextField: {'widget': MaxLengthAdminMarkdownxWidget},
     }
 
 
