@@ -21,7 +21,9 @@
             </div>
             {% endfor %}
             {% if more_content %}
-            <a href="index/">more</a>
+            <a href="/{{section|lower}}/index/">All {{ section }}</a>
+            <br>
+            <br>
             {% endif %}
         </div>
         {% endif %}

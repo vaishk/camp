@@ -8,7 +8,9 @@
         {% endfor %}
         {% with section|lower|add:'_list' as section_list %}
         {% if has_more_content %}
-        <a href="{% url section_list %}">more</a>
+        <a href="/{{section|lower}}/index/">All {{ section }}</a>
+        <br>
+        <br>
         {% endif %}
         {% endwith %}
     </div>

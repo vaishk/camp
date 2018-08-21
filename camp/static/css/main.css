@@ -193,3 +193,8 @@ label, button {
 button {
     background: #99999 !important;
 }
+
+p {
+  line-height: 1.3;
+}
+
