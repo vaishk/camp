@@ -1,0 +1,30 @@
+diff --git a/photologue/forms.py b/photologue/forms.py
+index 2b05c17..1a69f88 100644
+--- a/photologue/forms.py
++++ b/photologue/forms.py
+@@ -114,16 +114,6 @@ class UploadZipForm(forms.Form):
+                 logger.debug('Ignoring file "{0}".'.format(filename))
+                 continue
+ 
+-            if os.path.dirname(filename):
+-                logger.warning('Ignoring file "{0}" as it is in a subfolder; all images should be in the top '
+-                               'folder of the zip.'.format(filename))
+-                if request:
+-                    messages.warning(request,
+-                                     _('Ignoring file "{filename}" as it is in a subfolder; all images should '
+-                                       'be in the top folder of the zip.').format(filename=filename),
+-                                     fail_silently=True)
+-                continue
+-
+             data = zip.read(filename)
+ 
+             if not len(data):
+@@ -166,7 +156,7 @@ class UploadZipForm(forms.Form):
+                 continue
+ 
+             contentfile = ContentFile(data)
+-            photo.image.save(filename, contentfile)
++            photo.image.save(os.path.basename(filename), contentfile)
+             photo.save()
+             photo.sites.add(current_site)
+             gallery.photos.add(photo)
