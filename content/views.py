@@ -135,6 +135,7 @@ def render_content(request, shortname, section, template, types):
             return event(request)
         else:
             return section_index(request, section)
+    shortname = shortname.replace(' ', '_')
     content = get_object_or_404(Content, shortname=shortname, type__name__in=types)
     if not content.published and not request.user.is_staff:
         raise Http404
@@ -242,9 +243,9 @@ def redirect_index(request):
     return redirect(reverse('index'))
 
 def redirect_event(request):
-    shortname = request.GET.get('this')
+    shortname = request.GET.get('this').replace(' ', '_').lower()
     if shortname:
-        content = get_object_or_404(Content, shortname=shortname)
+        content = get_object_or_404(Content, shortname__iexact=shortname)
         return redirect(content.get_absolute_url())
     id = request.GET.get('id')
     if id:
